@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+
+    <link rel="stylesheet"
+        href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+  <script src="https://unpkg.com/jquery"></script>
+  <script src="https://unpkg.com/popper"></script>
+  <script src="https://unpkg.com/bootstrap"></script>
+
+  <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <script src="https://kit.fontawesome.com/e67c9745e2.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/stylesheets/app.css">
+  <link rel="shortcut icon" href="/static/favicon.ico">
+</head>
+<body>  
+<!-- <nav class="navbar navbar-expand">    
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">
+                <i class="fa-solid fa-house"></i>
+              <span>Home</span>
+            </a>
+          </div>
+        <ul class="nav navbar-nav navbar-right">        
+       -->
+        {% if not g.user %}
+        <div class="banner">
+            <div>
+              <h1>Hi-Spot</h1>
+              <h2>Condominiums</h2>
+              <h3>Laconia, NH</h3>
+              <a class="btn btn-primary" href="/signup" role="button">Sign Up</a>
+              <a class="btn btn-primary" href="/login" role="button">Log In</a>
+            </div>  
+          </div>
+   
+        {% else %}
+
+        <nav class="navbar navbar-expand">    
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand">
+                        <i class="fa-solid fa-house"></i>
+                      <span>Home</span>
+                    </a>
+                    <ul class="nav navbar-nav navbar-right">   
+                        <li><a href="/events">Upcoming Events</a></li>        
+                        <li><a href="/docs">Condo Docs</a></li>
+                        <li><a href="/pay">Pay Invoice</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/logout">Log out</a></li>
+                    </ul>
+                  </div>
+                </div>
+                </nav>
+        {% endif %}     
+        
+    
+        
+</nav>
+<div class="container">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  
+    {% block content %}
+    {% endblock %}
+  
+  </div>   
+</body>
+</html>
