@@ -6,9 +6,12 @@ from flask_debugtoolbar import DebugToolbarExtension
 from requests import Session
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
 
-from secret import secret_stripe_key, publishable_stripe_key
+from secret import secret_stripe_key
 
 from models import db, connect_db, User, Board
+
+publishable_stripe_key = 'pk_test_51LUyPRBQnQlv8BXXSDB4CdqhM5Rpnhx4lWMAcSUdjbORzGhy4h2JKYOtzFhcp8KhDc87cQPAOIE23Gc18Kkzlfs200S6ufWWXU'
+# test mode
 
 stripe.api_key=publishable_stripe_key
 
