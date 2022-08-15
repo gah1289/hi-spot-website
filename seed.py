@@ -1,5 +1,6 @@
 from app import db
-from models import User, Board, Payment
+from models import User, Board, Payment, Photo, Event
+from datetime import date, time
 
 db.drop_all()
 db.create_all()
@@ -31,6 +32,15 @@ bob=User(
     unit=16
 )
 
+dan=User(
+    first_name='Dan',
+    last_name='Jodoin',
+    username='danj',
+    password='000000',
+    email='danj@gmail.com',
+    unit=11
+)
+
 payment=Payment(
     user_id=1,
     stripe_customer_id='fdbvfbvees',
@@ -40,8 +50,6 @@ payment=Payment(
     payment_method='pm_card_visa',
     stripe_payment_id='iuvorwfwrjf32'
 )
-
-db.session.add(payment)
 
 gab.signup(first_name='Gabby',
     last_name='McCarthy',
@@ -64,11 +72,131 @@ bob.signup(first_name='Bob',
     email='bobpratte@gmail.com',
     unit=16)
 
+dan.signup(
+    first_name='Dan',
+    last_name='Jodoin',
+    username='danj',
+    password='000000',
+    email='danj@gmail.com',
+    unit=11
+)
+
 db.session.commit()
 
 president=Board(user_id=3,
 position='President')
 
-db.session.add(president)
+director=Board(user_id=4,
+position='Director')
+
+drone_1=Photo(
+    url='static/images/drone-1.jpg',
+    name='Jesse Holland',
+    alt_txt='aerial view of Hi-Spot'
+)
+
+drone_2=Photo(
+    url='static/images/drone-2.jpg',
+    name='Jesse Holland',
+    alt_txt='aerial view of Hi-Spot'
+)
+
+drone_6=Photo(
+    url='static/images/drone-6.jpg',
+    name='Jesse Holland',
+    alt_txt='aerial view of Hi-Spot'
+)
+
+drone_7=Photo(
+    url='static/images/drone-7.jpg',
+    name='Jesse Holland',
+    alt_txt='aerial view of Hi-Spot'
+)
+
+drone_8=Photo(
+    url='static/images/drone-8.jpg',
+    name='Jesse Holland',
+    alt_txt='aerial view of Hi-Spot'
+)
+
+motel_1=Photo(
+    url='static/images/photos-bob/motel-1.jpg',
+    name='Bob Pratte',
+    alt_txt='motel photo from 2005'
+)
+
+motel_2=Photo(
+    url='static/images/photos-bob/motel-2.jpg',
+    name='Bob Pratte',
+    alt_txt='motel photo from 2005'
+)
+
+motel_3=Photo(
+    url='static/images/photos-bob/motel-3.jpg',
+    name='Bob Pratte',
+    alt_txt='motel photo from 2005'
+)
+
+motel_4=Photo(
+    url='static/images/photos-bob/motel-4.jpg',
+    name='Bob Pratte',
+    alt_txt='motel photo from 2005'
+)
+
+motel_5=Photo(
+    url='static/images/photos-bob/motel-5.jpg',
+    name='Bob Pratte',
+    alt_txt='motel photo from 2005'
+)
+
+motel_6=Photo(
+    url='static/images/photos-bob/motel-6.jpg',
+    name='Bob Pratte',
+    alt_txt='motel photo from 2005'
+)
+
+brochure=Photo(
+    url='static/images/denise/brochure.jpg',
+    name='Denise Fishlock',
+    alt_txt="photo of brochure"
+)
+
+bw_hispot=Photo(
+    url='static/images/denise/bw-hispot.jpg',
+    name='Reid McCarthy',
+    alt_txt='old photo of Hi-Spot'
+)
+
+receipt=Photo(
+    url='static/images/denise/receipt.jpg',
+    name='Reid McCarthy',
+    alt_txt="old receipt"
+)
+
+fall_meeting=Event(
+    title="Fall Meeting 2022",
+    description="Hi-Spot Condo association's yearly Fall meeting",
+    location_name="Gilford Town Hall",
+    location_address="47 Cherry Valley Rd, Gilford, NH 03249",
+    date= date(2022, 10,2),
+    start_time=time(10,0),
+    end_time=time(12,0),
+    added_by=1
+)
+
+spring_meeting=Event(
+    title="Spring Meeting 2022",
+    description="Hi-Spot Condo association's yearly Spring meeting",
+    location_name="Hi Spot Front Lawn",
+    location_address="277 Weirs Blvd. Laconia, NH",
+    date= date(2022, 5,2),
+    start_time=time(10,0),
+    end_time=time(12,0),
+    added_by=1
+)
+
+db.session.add_all([payment, director, president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
+
 db.session.commit()
+
 

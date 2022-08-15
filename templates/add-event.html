@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+          <h1>Add Event:</h1>
+          {%for field in form if field.widget.input_type != 'hidden'%}
+          <div class="row">
+            <div class="col">{{field.label}}</div>
+            <div class="col">{{field}}</div>        
+          {%endfor%}
+        </div>
+        <button class="btn btn-outline-success btn-block">Add to schedule</button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

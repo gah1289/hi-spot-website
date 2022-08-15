@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<div class="p-3">
+    {% if g.user.id in board_ids %}
+    <a href="/add_event" class="btn btn-primary btn-lg" role="button" aria-disabled="true">Add Event</a>
+    {%endif%}
+
+
+<h1>Upcoming:</h1>
+{% for event in events |sort(attribute='date')%}
+{% if event.date >= current_date %}
+<div class="card text-bg-light mb-3" style="max-width: 75rem;">
+    <div class="card-body">
+        <div class="row">
+            <div class="col w-75">
+                <h5 class="card-title">{{event.title}}</h5>
+                <p class="card-text">{{event.description}}</p>
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <i class="fa-light fa-calendar-day"></i>
+                            </td>
+                            <td>
+                                {{event.date|date}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-light fa-alarm-clock"></i></td>
+                            <td>{{event.start_time|time}} - {{event.end_time|time}}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-light fa-location-dot"></i></td>
+                            <td><b>{{event.location_name}}</b> <br>
+                                <address>{{event.location_address}}</address></td>
+                        </tr>
+                    </table>
+            </div>
+            <div class="col">
+                {%if g.user.id in board_ids %}               
+                    <a class="btn btn-outline-secondary" href="#" role="button">Reschedule</a>
+                    <br>
+                    <a class="btn btn-danger" href="#" id="cancel-event" role="button">Cancel</a>
+                    {% endif %}
+                </div>
+            </div>  
+            <div class="row">
+                <p class="card-text"><small class="text-muted">Added by {{event.user.first_name}} {{event.user.last_name}}</small></p>
+            </div>    
+        </div>
+</div>
+
+{% endif %}
+{%endfor%}
+
+<h1>Past Events:</h1>
+{% for event in events |sort(attribute='date', reverse=True) %}
+{% if current_date > event.date %}
+<div class="card text-bg-light mb-3" style="max-width: 75rem;">
+    <div class="card-body">
+        <div class="row">
+            <div class="col w-75">
+                <h5 class="card-title">{{event.title}}</h5>
+                <p class="card-text">{{event.description}}</p>
+                    <table class="table m-3">
+                        <tr>
+                            <td>
+                                <i class="fa-light fa-calendar-day"></i>
+                            </td>
+                            <td>
+                                {{event.date|date}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-light fa-alarm-clock"></i></td>
+                            <td>{{event.start_time|time}} - {{event.end_time|time}}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-light fa-location-dot"></i></td>
+                            <td><address>{{event.location_address}}</address></td>
+                        </tr>
+                    </table>
+            </div>
+            <div class="col">
+
+            </div>
+    </div>
+    <div class="row">
+        <p class="card-text"><small class="text-muted">Added by {{event.user.first_name}} {{event.user.last_name}}</small></p>
+    </div>    
+</div>
+</div>
+{% endif %}
+{%endfor%}
+
+</div>
+
+{%endblock%} 

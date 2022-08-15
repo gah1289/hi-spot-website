@@ -1,0 +1,26 @@
+{%extends 'base.html' %}
+
+{% block content %}
+
+<div class="text-center">
+    <h1>Hi-Spot Condominiums</h1>    
+    <address>
+        <h2>277 Weirs Boulevard
+        <br> Laconia, NH 03246</h2>
+    </address>
+    
+    <ul class="list-group list-group-flush">
+        <h2>Board:</h2>
+        {% for member in board %}
+        <li class="list-group-item"><b>{{member.position}} </b> - {{member.user.first_name}} {{member.user.last_name}} Unit {{member.user.unit}}</li>
+        {% endfor %}
+      </ul>
+
+    <div class="row">
+        <a href="mailto:hispotboard@gmail.com" class="btn btn-outline-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">
+            <i class="fa-light fa-envelope"></i>  Email the Board</a>
+    </div>
+</address>
+</div>
+    
+{% endblock %}

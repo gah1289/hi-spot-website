@@ -1,7 +1,9 @@
 import email
+from email.policy import default
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 import stripe
+
 
 
 bcrypt = Bcrypt()
@@ -123,6 +125,29 @@ class Board(db.Model):
 
     user=db.relationship('User')
 
+class Photo(db.Model):
+    """Pictures for photo gallery"""
+
+    __tablename__="photos"
+
+    id= db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+
+    url=db.Column(db.Text, nullable=False, unique=True)
+
+    name=db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+    alt_txt=db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+
 class Payment(db.Model):
     """Person trying to make a payment online"""
 
@@ -211,6 +236,51 @@ class Payment(db.Model):
         )
         return payment_intent    
 
+class Event(db.Model):
+    """Condo-related events"""
+
+    __tablename__="events"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+
+    title=db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    description=db.Column(
+        db.Text,
+        default=None
+    )
+
+    location_name=db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    location_address=db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    date=db.Column(
+        db.Date,
+        nullable=False,
+    )
+
+    start_time=db.Column(db.Time,nullable=False)
+    end_time=db.Column(db.Time,nullable=False)
+
+    added_by=db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+    )
+
+    user=db.relationship('User')
 
 
 def connect_db(app):
