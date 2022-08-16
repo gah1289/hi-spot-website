@@ -1,8 +1,9 @@
+from ast import Add
 import os
 import stripe 
 import datetime
 
-from flask import Flask, render_template, request, flash, redirect, session, g
+from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from requests import Session
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
@@ -57,6 +58,18 @@ def do_logout():
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
+def get_board_ids():
+    """Get a list of board id's to use in HTML so only board members have access to certain links"""
+    board=Board.query.all()
+    board_ids=[]
+    for member in board:
+        board_ids.append(member.user_id)
+    return board_ids
+
+board_ids=get_board_ids()
+
+get_board_ids()
+
 @app.route('/')
 def home_page():
     """Home Page"""
@@ -64,7 +77,8 @@ def home_page():
 
     if not g.user:
         return render_template('home-anon.html', title=title)
-    return render_template('home.html', title=title)
+    board_ids=get_board_ids()
+    return render_template('home.html', title=title, board_ids=board_ids)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -143,7 +157,7 @@ def show_contact_page():
     if g.user:
         title="Contact Hi-Spot"
         board=Board.query.all()
-        return render_template('contact.html', title=title, board=board)
+        return render_template('contact.html', title=title, board=board, board_ids=board_ids)
     else:
         flash('Please log in or register', 'danger')
         return redirect('/')
@@ -153,7 +167,7 @@ def show_condo_docs():
     """Show condo docs"""
     if g.user:
         title='Hi-Spot Condo Docs'
-        return render_template('docs.html', title=title)
+        return render_template('docs.html', title=title, board_ids=board_ids)
     else:
         flash('Please log in or register', 'danger')
         return redirect('/')
@@ -165,7 +179,7 @@ def show_photo_gallery():
     if g.user:
         title='Hi-Spot Photos'
         photos=Photo.query.all()
-        return render_template('photos.html', title=title, photos=photos)
+        return render_template('photos.html', title=title, photos=photos, board_ids=board_ids)
     else:
         flash('Please log in or register', 'danger')
         return redirect('/')
@@ -209,19 +223,12 @@ def show_upcoming_events():
         redirect('/')
     current_date=datetime.date.today()
     events=Event.query.all()
-    board=Board.query.all()
-    board_ids=[]
-    for member in board:
-        board_ids.append(member.user_id)
+
     return render_template('events.html', events=events, current_date=current_date, board_ids=board_ids)
 
 @app.route('/add_event', methods=["GET", "POST"])
 def add_event():
     """Allow board member to add an event"""
-    board=Board.query.all()
-    board_ids=[]
-    for member in board:
-        board_ids.append(member.user_id)
     if not g.user and g.user.id not in board_ids:
         flash('Not authorized', "danger")
         redirect('/')
@@ -247,6 +254,118 @@ def add_event():
     
     return render_template('add-event.html', form=form)
 
+@app.route('/events/<id>/cancel', methods=["GET","POST"])
+def cancel_event(id):
+    """Allow board member to cancel event. The event will stay on the list, but will inform the user that it is cancelled"""    
+    
+    event=Event.query.get_or_404(id)    
+        
+    event.title=event.title,
+    event.description='This event has been cancelled',
+    event.location_name=event.location_name,
+    event.location_address=event.location_address,
+    event.date=event.date,
+    event.start_time=event.start_time,
+    event.end_time=event.end_time,
+    event.added_by=g.user.id
+        
+    db.session.commit()
+
+    flash(f'{event.title} has been cancelled', 'error')
+    return redirect('/events')
+
+@app.route('/events/<id>/reschedule', methods=["GET","POST"])
+def reschedule_event(id):
+    """Allow board member to reschedule event"""
+    event=Event.query.get_or_404(id)
+
+    form=AddEventForm(obj=event)
+
+    if form.validate_on_submit():
+        event.title=form.title.data,
+        event.description='This event has been rescheduled',
+        event.location_name=form.location_name.data,
+        event.location_address=form.location_address.data,
+        event.date=form.date.data,
+        event.start_time=form.start_time.data,
+        event.end_time=form.end_time.data,
+        event.added_by=g.user.id
+            
+        db.session.commit()
+
+        flash(f'{event.title} has been rescheduled', 'warning')
+        return redirect('/events')
+    
+    return render_template('reschedule.html', form=form)
+
+@app.route('/events/<id>/delete', methods=["GET", "POST"])
+def delete_event(id):
+    """Remove event from list in case of user error"""
+    event=Event.query.get_or_404(id)
+    db.session.delete(event)
+    db.session.commit()
+
+    flash(f'Deleted event: {event.title}', 'danger')
+    return redirect('/events')
+
+
+@app.route('/board', methods=["GET", "POST"])
+def edit_board_members():
+    """Allow board members to edit the board"""
+    if not g.user and g.user.id not in board_ids:
+        flash('Not authorized', 'error')
+
+    
+    board=[(b.user.id, f'{b.user.first_name} {b.user.last_name}') for b in Board.query.all()]
+    form=BoardMembersForm(obj=board)
+    # why idn't it automatically filling up with board member info?
+    
+    user_choices=[(int(u.id), f'{u.first_name} {u.last_name}') for u in User.query.all()]
+  
+    form.president.choices=user_choices
+    form.vp.choices=user_choices
+    form.treasurer.choices=user_choices
+    form.secretary.choices=user_choices
+    form.director.choices=user_choices
+    form.alternate.choices=user_choices
+
+    if form.validate_on_submit():
+
+        president=Board(
+            position='president',
+            user_id=form.president.data
+        )
+        vp=Board(
+            position='vp',
+            user_id=form.vp.data
+        )
+        treasurer=Board(
+            position='treasurer',
+            user_id=form.treasurer.data
+        )
+        secretary=Board(
+            position='secretary',
+            user_id=form.secretary.data
+        )
+        director=Board(
+            position='director',
+            user_id=form.director.data
+        )
+        alternate=Board(
+            position='alternate',
+            user_id=form.alternate.data
+        )
+
+        Board.query.delete()
+        db.session.add_all([president, vp, treasurer, secretary,director,alternate])
+        db.session.commit()
+
+        flash('Successfully updated board!', 'success')
+        return redirect('/contact')
+
+    return render_template('board.html', form=form, board_ids=board_ids)
+
+
 @app.template_filter('date')
 def date_format(value, format="%B %d, %Y"):
     """Converts date to more readable format. 
@@ -264,3 +383,5 @@ def date_format(value, format="%-I:%M %p"):
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('custom-404.html')
+
+

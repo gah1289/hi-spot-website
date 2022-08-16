@@ -2,6 +2,9 @@
 
 {% block content%}
 
+{%block modal%} 
+{%endblock%}
+
 <div class="p-3">
     {% if g.user.id in board_ids %}
     <a href="/add_event" class="btn btn-primary btn-lg" role="button" aria-disabled="true">Add Event</a>
@@ -16,7 +19,13 @@
         <div class="row">
             <div class="col w-75">
                 <h5 class="card-title">{{event.title}}</h5>
-                <p class="card-text">{{event.description}}</p>
+                
+
+            {% if event.description == 'This event has been rescheduled'%}
+                <p class="card-text">                    
+                    <span class="text-bg-warning"> {{event.description}}</span>
+                    </p>
+
                     <table class="table">
                         <tr>
                             <td>
@@ -36,14 +45,130 @@
                                 <address>{{event.location_address}}</address></td>
                         </tr>
                     </table>
+                              
+                {% elif event.description == 'This event has been cancelled'%}
+                <p class="card-text">                    
+                    <span class="text-bg-danger"> {{event.description}}</span>
+                    </p>
+                    <table class="table text-muted">
+                        <tr>
+                            <td>
+                                <i class="fa-light fa-calendar-day"></i>
+                            </td>
+                            <td>
+                                <s>{{event.date|date}}</s>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-light fa-alarm-clock"></i></td>
+                            <td>
+                                <s>{{event.start_time|time}} - {{event.end_time|time}}</s></td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-light fa-location-dot"></i></td>
+                            <td><s><b>{{event.location_name}}</b> <br>
+                                <address>{{event.location_address}}</address></s></td>
+                        </tr>                        
+                    </table>
+                    {%else%}
+                    <p class="card-text"></p>
+                    {{event.description}}                    
+                
+                </p>
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <i class="fa-light fa-calendar-day"></i>
+                            </td>
+                            <td>
+                                {{event.date|date}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-light fa-alarm-clock"></i></td>
+                            <td>{{event.start_time|time}} - {{event.end_time|time}}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-light fa-location-dot"></i></td>
+                            <td><b>{{event.location_name}}</b> <br>
+                                <address>{{event.location_address}}</address></td>
+                        </tr>
+                    </table>
+                    {%endif%}
             </div>
+
             <div class="col">
-                {%if g.user.id in board_ids %}               
-                    <a class="btn btn-outline-secondary" href="#" role="button">Reschedule</a>
-                    <br>
-                    <a class="btn btn-danger" href="#" id="cancel-event" role="button">Cancel</a>
-                    {% endif %}
+                {%if g.user.id in board_ids %}
+                <div class="row">
+                    <div class="col w-30">
+                    <a class="btn btn-outline-secondary" href="/events/{{event.id}}/reschedule" role="button">Reschedule</a>
                 </div>
+                </div>             
+
+                   
+        {% if event.description != 'This event has been cancelled' %}
+         <!-- Cancel event modal https://getbootstrap.com/docs/5.2/components/modal/#how-it-works -->
+         <div class="row">
+            <div class="col w-30">
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelEvtModal">
+        Cancel Event
+        </button>  
+            </div>
+         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="cancelEvtModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel {{event.title}}?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                The event will stay on the list, but it will show up as "cancelled"
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
+                <a href="/events/{{event.id}}/cancel" role="button" class="btn btn-danger">Cancel Event</a>
+                </div>
+            </div>
+            </div>
+        </div>
+        {%endif%}
+
+                    {%if g.user.id == event.added_by %}
+ 
+                    <!-- Delete event modal  -->
+                    <div class="row">
+                        <div class="col w-30">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteEvtModal">
+                Delete <i class="fa-light fa-trash-can"></i>
+                </button>  
+        </div>
+                    </div>
+            <!-- Modal -->
+            <div class="modal fade" id="deleteEvtModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete {{event.title}}?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    The event will be removed from the list entirely.
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
+                    <a href="/events/{{event.id}}/delete" role="button" class="btn btn-danger">Delete Event</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+                    
+
+                    
+                    {%endif%}
+                    {% endif %}
+            </div>
             </div>  
             <div class="row">
                 <p class="card-text"><small class="text-muted">Added by {{event.user.first_name}} {{event.user.last_name}}</small></p>

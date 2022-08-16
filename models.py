@@ -125,6 +125,9 @@ class Board(db.Model):
 
     user=db.relationship('User')
 
+    def __repr__(self):
+        return f"<Board Members>"
+
 class Photo(db.Model):
     """Pictures for photo gallery"""
 
@@ -289,4 +292,7 @@ def connect_db(app):
 
     db.app = app
     db.init_app(app)
+    return app
+
+
 

@@ -1,9 +1,12 @@
+from unicodedata import category
 from flask import Flask
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, IntegerField, SelectField, DateField, TimeField
 from wtforms.validators import DataRequired, Email, Length, NumberRange
 
 import email_validator 
+
+board_members=[(1, 'Bob Pratte'), (4, 'Dan Jodoin'), (3,'Reid McCarthy')]
 
 board_positions=('pr', 'President'),('vp','Vice President'),('tr', 'Treasurer'), ('sec', 'Secretary'), ('dir', 'Director'), ('alt', 'Alternate')
 
@@ -24,9 +27,15 @@ class LoginForm(FlaskForm):
 
 class BoardMembersForm(FlaskForm):
     """Form for adding and changing members of the board"""
-    first_name=StringField('First Name', validators=[DataRequired()])
-    last_name=StringField('Last Name', validators=[DataRequired()])
-    position=SelectField('Position', choices=[board_positions])
+    president=SelectField('President', coerce=int)
+    vp=SelectField('Vice President', coerce=int)
+    treasurer=SelectField('Treasurer', coerce=int)
+    secretary=SelectField('Secretary', coerce=int)
+    director=SelectField('Director', coerce=int)
+    alternate=SelectField('Alternate', coerce=int)
+
+    password=StringField('Password', validators=[DataRequired()])
+
 
 class AddEventForm(FlaskForm):
     title=StringField('Event Name', validators=[DataRequired()])
