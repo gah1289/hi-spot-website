@@ -2,7 +2,9 @@ from app import db
 from models import User, Board, Payment, Photo, Event
 from datetime import date, time
 
+print('*************START SEED.PY*************')
 db.drop_all()
+print('*****ALL DROPPED***********')
 db.create_all()
 
 gab=User(
@@ -81,13 +83,25 @@ dan.signup(
     unit=11
 )
 
+bill=User.signup(
+    first_name='Bill',
+    last_name='Hurley',
+    username='bill',
+    password='000000',
+    email='bill@gmail.com',
+    unit=9
+)
+
 db.session.commit()
 
 president=Board(user_id=3,
 position='President')
 
+vp=Board(user_id=5, position='Vice President')
+
 director=Board(user_id=4,
 position='Director')
+
 
 drone_1=Photo(
     url='static/images/drone-1.jpg',
@@ -195,7 +209,7 @@ spring_meeting=Event(
     added_by=1
 )
 
-db.session.add_all([payment, director, president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
+db.session.add_all([payment, director, vp,president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
 
 db.session.commit()
 

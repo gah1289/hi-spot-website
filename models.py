@@ -16,47 +16,44 @@ class User(db.Model):
     id = db.Column(
         db.Integer,
         primary_key=True,
+        autoincrement=True
     )  
 
     first_name=db.Column(
         db.Text,
-        nullable=False,
+        nullable=False
     )
 
     last_name=db.Column(
         db.Text,
-        nullable=False,
+        nullable=False
     )
 
     username = db.Column(
         db.Text,
         nullable=False,
-        unique=True,
+        unique=True
     )
 
     password = db.Column(
         db.Text,
-        nullable=False,
+        nullable=False
     )
 
     email = db.Column(
         db.Text,
         nullable=False,
-        unique=True,
+        unique=True
     )
 
     unit=db.Column(db.Integer)
+    print('***********CREATED USERS TABLE')
 
-    board=db.relationship('Board')
+    # board=db.relationship('Board', backref='user')
 
     def __repr__(self):
         return f"<{self.first_name} {self.last_name} in Unit {self.unit}>"
     
-    # def is_board_member(self, board_member):
-    #     """Is this user on the board?"""
-    #     board_list=[user for user in self.board]
-
-
     @classmethod
     def signup(cls, first_name, last_name, username, password, email, unit):
         """Sign up user.
@@ -118,15 +115,14 @@ class Board(db.Model):
     user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id', ondelete='CASCADE'),
-        nullable=False,
     )
 
     position=db.Column(db.String, unique=True)
 
-    user=db.relationship('User')
+    user=db.relationship('User', backref="board")
 
     def __repr__(self):
-        return f"<Board Members>"
+        return f"<Board Member: {self.position}>"
 
 class Photo(db.Model):
     """Pictures for photo gallery"""
@@ -150,6 +146,10 @@ class Photo(db.Model):
         nullable=False,
     )
 
+    def __repr__(self):
+        return f"<Photo Member: {self.url}>"
+
+    print('***********CREATED BOARD TABLE')
 
 class Payment(db.Model):
     """Person trying to make a payment online"""
@@ -194,7 +194,7 @@ class Payment(db.Model):
         nullable=False
     )
 
-    user=db.relationship('User')
+    user=db.relationship('User', backref="payments")
 
     def create_customer(name, email, payment_method):
         """Create customer with scalar values"""
@@ -237,7 +237,12 @@ class Payment(db.Model):
             payment_method=payment_method,
             receipt_email=receipt_email
         )
-        return payment_intent    
+        return payment_intent  
+
+    def __repr__(self):
+        return f"<Payment: {self.amount}>"  
+    
+    print('***********CREATED PAYMENT TABLE')
 
 class Event(db.Model):
     """Condo-related events"""
@@ -283,7 +288,12 @@ class Event(db.Model):
         nullable=False,
     )
 
-    user=db.relationship('User')
+    user=db.relationship('User', backref="events")
+
+    def __repr__(self):
+        return f"<Event: {self.title}>"
+
+    print('***********CREATED EVENT TABLE')
 
 
 def connect_db(app):
@@ -292,6 +302,7 @@ def connect_db(app):
 
     db.app = app
     db.init_app(app)
+    ("****************connect_db executed")
     return app
 
 

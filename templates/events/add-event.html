@@ -1,5 +1,5 @@
-
 {% extends 'base.html' %}
+{%block title %} Add Event{%endblock%}
 {% block content %}
 
   <div class="row justify-content-center">
@@ -14,7 +14,7 @@
             <div class="col">{{field}}</div>        
           {%endfor%}
         </div>
-        <button class="btn btn-outline-success btn-block">Reschedule</button>
+        <button class="btn btn-outline-success btn-block">Add to schedule</button>
       </form>
     </div>
   </div>

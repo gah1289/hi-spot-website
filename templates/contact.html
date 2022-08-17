@@ -1,5 +1,7 @@
 {%extends 'base.html' %}
 
+{%block title %}Contact {%endblock%}
+
 {% block content %}
 
 <div class="text-center">
@@ -11,7 +13,7 @@
     
     <ul class="list-group list-group-flush">
         <h2>Board:</h2>
-        {% for member in board %}
+        {% for member in board |sort(attribute="id") %}
         <li class="list-group-item"><b>{{member.position}} </b> - {{member.user.first_name}} {{member.user.last_name}} Unit {{member.user.unit}}</li>
         {% endfor %}
       </ul>

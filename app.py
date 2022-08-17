@@ -33,6 +33,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
+print('*******connect_db(app) in app.py*********')
 
 @app.before_request
 def add_user_to_g():
@@ -40,9 +41,11 @@ def add_user_to_g():
 
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
+        print(f'**************g.user = {g.user}*************')
 
     else:
         g.user = None
+        print('**************No g.user*************')
 
 
 def do_login(user):
@@ -73,12 +76,12 @@ get_board_ids()
 @app.route('/')
 def home_page():
     """Home Page"""
-    title='Hi-Spot'
+    
 
     if not g.user:
-        return render_template('home-anon.html', title=title)
+        return render_template('home-anon.html')
     board_ids=get_board_ids()
-    return render_template('home.html', title=title, board_ids=board_ids)
+    return render_template('home.html', board_ids=board_ids)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -103,7 +106,7 @@ def login():
 
         flash("Invalid password!", 'danger')
 
-    return render_template('login.html', form=form)
+    return render_template('user/login.html', form=form)
 
 @app.route('/register', methods=["GET", "POST"])
 def signup():
@@ -133,14 +136,14 @@ def signup():
 
         except IntegrityError:
             flash("Username already taken", 'danger')
-            return render_template('register.html', form=form)
+            return render_template('user/register.html', form=form)
 
         do_login(user)
         flash(f"Welcome, {user.first_name}!", "primary")
         return redirect("/")
 
     else:
-        return render_template('register.html', form=form)
+        return render_template('user/register.html', form=form)
 
 @app.route('/logout')
 def logout():
@@ -155,9 +158,9 @@ def logout():
 def show_contact_page():
     """Show contact info"""
     if g.user:
-        title="Contact Hi-Spot"
+        
         board=Board.query.all()
-        return render_template('contact.html', title=title, board=board, board_ids=board_ids)
+        return render_template('contact.html',  board=board, board_ids=board_ids)
     else:
         flash('Please log in or register', 'danger')
         return redirect('/')
@@ -166,8 +169,8 @@ def show_contact_page():
 def show_condo_docs():
     """Show condo docs"""
     if g.user:
-        title='Hi-Spot Condo Docs'
-        return render_template('docs.html', title=title, board_ids=board_ids)
+        
+        return render_template('docs.html', board_ids=board_ids)
     else:
         flash('Please log in or register', 'danger')
         return redirect('/')
@@ -177,9 +180,9 @@ def show_photo_gallery():
     """Show photos"""
 
     if g.user:
-        title='Hi-Spot Photos'
+        
         photos=Photo.query.all()
-        return render_template('photos.html', title=title, photos=photos, board_ids=board_ids)
+        return render_template('photos.html', photos=photos, board_ids=board_ids)
     else:
         flash('Please log in or register', 'danger')
         return redirect('/')
@@ -210,9 +213,9 @@ def edit_user_info():
         except IntegrityError:
             db.session.rollback()
             flash("Username already taken", 'danger')
-            return render_template('edit_user.html', form=form)
+            return render_template('user/edit-user.html', form=form)
     
-    return render_template('edit_user.html', form=form)
+    return render_template('user/edit-user.html', form=form)
 
 
 @app.route('/events', methods=["GET", "POST"])
@@ -224,7 +227,7 @@ def show_upcoming_events():
     current_date=datetime.date.today()
     events=Event.query.all()
 
-    return render_template('events.html', events=events, current_date=current_date, board_ids=board_ids)
+    return render_template('events/events.html', events=events, current_date=current_date, board_ids=board_ids)
 
 @app.route('/add_event', methods=["GET", "POST"])
 def add_event():
@@ -252,11 +255,15 @@ def add_event():
         flash(f'Successfully added event: {event.title}!')
         return redirect('/events')
     
-    return render_template('add-event.html', form=form)
+    return render_template('events/add-event.html', form=form)
 
 @app.route('/events/<id>/cancel', methods=["GET","POST"])
 def cancel_event(id):
-    """Allow board member to cancel event. The event will stay on the list, but will inform the user that it is cancelled"""    
+    """Allow board member to cancel event. The event will stay on the list, but will inform the user that it is cancelled"""  
+
+    if not g.user and g.user.id not in board_ids:
+        flash('Not authorized', "danger")
+        redirect('/')  
     
     event=Event.query.get_or_404(id)    
         
@@ -277,6 +284,11 @@ def cancel_event(id):
 @app.route('/events/<id>/reschedule', methods=["GET","POST"])
 def reschedule_event(id):
     """Allow board member to reschedule event"""
+
+    if not g.user and g.user.id not in board_ids:
+        flash('Not authorized', "danger")
+        redirect('/')
+
     event=Event.query.get_or_404(id)
 
     form=AddEventForm(obj=event)
@@ -296,11 +308,76 @@ def reschedule_event(id):
         flash(f'{event.title} has been rescheduled', 'warning')
         return redirect('/events')
     
-    return render_template('reschedule.html', form=form)
+    return render_template('events/reschedule.html', form=form)
+
+@app.route('/board', methods=["GET", "POST"])
+def edit_board_members():
+    """Allow board members to edit the board"""
+    if not g.user and g.user.id not in board_ids:
+        flash('Not authorized', 'error')    
+
+    
+    board=[(b.user.id, f'{b.user.first_name} {b.user.last_name}') for b in Board.query.all()]
+    form=BoardMembersForm(obj=board)    
+    # why isn't it automatically filling up with board member info when I do BoardMembersForm(obj=board)?
+
+    pres=Board.query.filter_by(position='President').one_or_none()
+    print('***********')
+    print(pres)
+    
+    user_choices=[(int(u.id), f'{u.first_name} {u.last_name}') for u in User.query.all()]
+  
+    form.president.choices=user_choices 
+    form.vp.choices=user_choices
+    form.treasurer.choices=user_choices
+    form.secretary.choices=user_choices
+    form.director.choices=user_choices 
+    form.alternate.choices=user_choices
+
+    # if form.validate_on_submit():        
+
+    #    president=Board(
+    #         position='President',
+    #         user_id=form.president.data
+    #     )
+    #    vp=Board(
+    #         position='Vice President',
+    #         user_id=form.vp.data
+    #     )
+    #    treasurer=Board(
+    #         position='Treasurer',
+    #         user_id=form.treasurer.data
+    #     )
+    #    secretary=Board(
+    #         position='Secretary',
+    #         user_id=form.secretary.data
+    #     )
+    #    director=Board(
+    #         position='Director',
+    #         user_id=form.director.data
+    #     )
+    #    alternate=Board(
+    #         position='Alternate',
+    #         user_id=form.alternate.data
+    #     )
+
+    #    Board.query.delete()
+    #    db.session.add_all([president, vp, treasurer, secretary,director,alternate])
+    #    db.session.commit()
+
+    #    flash('Successfully updated board!', 'success')
+    #    return redirect('/contact')
+    
+    return render_template('board.html', form=form, board_ids=board_ids)
 
 @app.route('/events/<id>/delete', methods=["GET", "POST"])
 def delete_event(id):
     """Remove event from list in case of user error"""
+
+    if not g.user and g.user.id not in board_ids:
+        flash('Not authorized', "danger")
+        redirect('/')
+
     event=Event.query.get_or_404(id)
     db.session.delete(event)
     db.session.commit()
@@ -309,61 +386,7 @@ def delete_event(id):
     return redirect('/events')
 
 
-@app.route('/board', methods=["GET", "POST"])
-def edit_board_members():
-    """Allow board members to edit the board"""
-    if not g.user and g.user.id not in board_ids:
-        flash('Not authorized', 'error')
 
-    
-    board=[(b.user.id, f'{b.user.first_name} {b.user.last_name}') for b in Board.query.all()]
-    form=BoardMembersForm(obj=board)
-    # why idn't it automatically filling up with board member info?
-    
-    user_choices=[(int(u.id), f'{u.first_name} {u.last_name}') for u in User.query.all()]
-  
-    form.president.choices=user_choices
-    form.vp.choices=user_choices
-    form.treasurer.choices=user_choices
-    form.secretary.choices=user_choices
-    form.director.choices=user_choices
-    form.alternate.choices=user_choices
-
-    if form.validate_on_submit():
-
-        president=Board(
-            position='president',
-            user_id=form.president.data
-        )
-        vp=Board(
-            position='vp',
-            user_id=form.vp.data
-        )
-        treasurer=Board(
-            position='treasurer',
-            user_id=form.treasurer.data
-        )
-        secretary=Board(
-            position='secretary',
-            user_id=form.secretary.data
-        )
-        director=Board(
-            position='director',
-            user_id=form.director.data
-        )
-        alternate=Board(
-            position='alternate',
-            user_id=form.alternate.data
-        )
-
-        Board.query.delete()
-        db.session.add_all([president, vp, treasurer, secretary,director,alternate])
-        db.session.commit()
-
-        flash('Successfully updated board!', 'success')
-        return redirect('/contact')
-
-    return render_template('board.html', form=form, board_ids=board_ids)
 
 
 @app.template_filter('date')

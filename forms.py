@@ -1,20 +1,16 @@
 from unicodedata import category
 from flask import Flask
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, IntegerField, SelectField, DateField, TimeField
+from wtforms import StringField, PasswordField, TextAreaField, IntegerField, SelectField, DateField, TimeField, EmailField
 from wtforms.validators import DataRequired, Email, Length, NumberRange
 
 import email_validator 
-
-board_members=[(1, 'Bob Pratte'), (4, 'Dan Jodoin'), (3,'Reid McCarthy')]
-
-board_positions=('pr', 'President'),('vp','Vice President'),('tr', 'Treasurer'), ('sec', 'Secretary'), ('dir', 'Director'), ('alt', 'Alternate')
 
 class UserAddForm(FlaskForm):
     """User register form"""
     first_name=StringField('First Name', validators=[DataRequired()])
     last_name=StringField('Last Name', validators=[DataRequired()])    
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    email = EmailField('E-mail', validators=[DataRequired(), Email()])
     unit = IntegerField('Unit Number', validators=[DataRequired(), NumberRange(min=1,max=18)])
 
     username = StringField('Username', validators=[DataRequired()])
@@ -34,7 +30,7 @@ class BoardMembersForm(FlaskForm):
     director=SelectField('Director', coerce=int)
     alternate=SelectField('Alternate', coerce=int)
 
-    password=StringField('Password', validators=[DataRequired()])
+    password=PasswordField('Password', validators=[DataRequired()])
 
 
 class AddEventForm(FlaskForm):

@@ -1,0 +1,61 @@
+@app.route('/board', methods=["GET", "POST"])
+def edit_board_members():
+    """Allow board members to edit the board"""
+    if not g.user and g.user.id not in board_ids:
+        flash('Not authorized', 'error')    
+
+    
+    board=[(b.user.id, f'{b.user.first_name} {b.user.last_name}') for b in Board.query.all()]
+    form=BoardMembersForm(obj=board)    
+    # why isn't it automatically filling up with board member info when I do BoardMembersForm(obj=board)?
+
+    pres=Board.query.filter_by(position='President').one_or_none()
+    print('***********')
+    print(pres)
+    
+    user_choices=[(int(u.id), f'{u.first_name} {u.last_name}') for u in User.query.all()]
+  
+    form.president.choices=user_choices 
+    form.vp.choices=user_choices
+    form.treasurer.choices=user_choices
+    form.secretary.choices=user_choices
+    form.director.choices=user_choices 
+    form.alternate.choices=user_choices
+
+    if form.validate_on_submit():        
+
+
+
+    #    president=Board(
+    #         position='President',
+    #         user_id=form.president.data
+    #     )
+    #    vp=Board(
+    #         position='Vice President',
+    #         user_id=form.vp.data
+    #     )
+    #    treasurer=Board(
+    #         position='Treasurer',
+    #         user_id=form.treasurer.data
+    #     )
+    #    secretary=Board(
+    #         position='Secretary',
+    #         user_id=form.secretary.data
+    #     )
+    #    director=Board(
+    #         position='Director',
+    #         user_id=form.director.data
+    #     )
+    #    alternate=Board(
+    #         position='Alternate',
+    #         user_id=form.alternate.data
+    #     )
+
+    #    Board.query.delete()
+    #    db.session.add_all([president, vp, treasurer, secretary,director,alternate])
+    #    db.session.commit()
+
+       flash('Successfully updated board!', 'success')
+       return redirect('/contact')
+    
+    return render_template('board.html', form=form, board_ids=board_ids)

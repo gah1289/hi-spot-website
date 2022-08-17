@@ -1,4 +1,6 @@
+
 {% extends 'base.html' %}
+{%block title %} Reschedule Event{%endblock%}
 {% block content %}
 
   <div class="row justify-content-center">
@@ -6,14 +8,14 @@
       <form method="POST">
         {{ form.hidden_tag() }}
         <div>
-          <h1>Add Event:</h1>
+          <h1>Reschedule Event:</h1>
           {%for field in form if field.widget.input_type != 'hidden'%}
           <div class="row">
             <div class="col">{{field.label}}</div>
-            <div class="col">{{field}}</div>        
+            <div class="col">{{field}}</div>           
           {%endfor%}
         </div>
-        <button class="btn btn-outline-success btn-block">Add to schedule</button>
+        <button class="btn btn-outline-success btn-block">Reschedule</button>
       </form>
     </div>
   </div>
