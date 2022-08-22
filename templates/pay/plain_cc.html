@@ -1,0 +1,76 @@
+{%extends 'base.html'%}
+
+{%block content%} 
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+      <form action='/card' method="POST">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+        <div>
+          <h1>Payment Information:</h1>
+          {%for field in form if field.widget.input_type != 'hidden'%}
+          <div class="row">
+            <div class="col">{{field.label}}</div>
+            <div class="col">{{field}}</div>   
+          </div>     
+          {%endfor%}
+        
+        <button class="btn btn-outline-success btn-block">Pay Now!</button>
+      </form>
+    </div>
+  </div>
+
+<!-- <form action="/card" method="post">
+    <div class="col-md-6">
+        <h1>Payment Information</h1>
+
+      <label for="name" class="form-label">Name:</label>
+      <input type="text" id="name" name="name" class="form-control" id="inputEmail4">
+    </div>
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email:</label>
+      <input type="email" name="email" class="form-control" id="email">
+    </div>
+
+    <div class="col-12">
+        <div class="row">
+        <div class="col-3">
+            <label for="inputAddress2" class="form-label">Expiration</label>
+            <input type="text" class="form-control" id="expiration" name="expiration" placeholder="Apartment, studio, or floor">
+        </div>
+        <div class="col-4">
+            <div class="col-md-6">
+                <label for="inputCity" class="form-label">Security Code</label>
+                <input type="text" class="form-control" id="security_code" name="security_code">
+              </div>
+        </div>
+    </div>
+    </div>
+    
+    <div class="col-12"> -->
+        <!-- https://stackoverflow.com/questions/48534229/what-is-the-correct-input-type-for-credit-card-numbers -->
+      <!-- <label for="inputAddress" class="form-label">Credit Card Number</label>
+      <input id="ccn" name="ccn" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx">
+    <div class="col-12">
+        <div class="row">
+        <div class="col-3">
+            <label for="inputAddress2" class="form-label">Expiration</label>
+            <input type="text" class="form-control" id="expiration" name="expiration" placeholder="Apartment, studio, or floor">
+        </div>
+        <div class="col-4">
+            <div class="col-md-6">
+                <label for="inputCity" class="form-label">Security Code</label>
+                <input type="text" class="form-control" id="security_code" name="security_code">
+              </div>
+        </div>
+    </div>
+    </div>
+  
+    
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Pay Now</button>
+    </div>
+</form> -->
+
+{%endblock%}

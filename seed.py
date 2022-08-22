@@ -1,10 +1,10 @@
 from app import db
-from models import User, Board, Payment, Photo, Event
+from models import User, Board, Payment, Photo, Event, Admin
 from datetime import date, time
 
-print('*************START SEED.PY*************')
+db.session.remove()
+# need to remove sessions or else tables won't drop
 db.drop_all()
-print('*****ALL DROPPED***********')
 db.create_all()
 
 gab=User(
@@ -92,7 +92,10 @@ bill=User.signup(
     unit=9
 )
 
+
 db.session.commit()
+
+admin=Admin(user_id=1)
 
 president=Board(user_id=3,
 position='President')
@@ -209,8 +212,7 @@ spring_meeting=Event(
     added_by=1
 )
 
-db.session.add_all([payment, director, vp,president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
+db.session.add_all([admin, payment, director, vp,president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
 
 db.session.commit()
-
 

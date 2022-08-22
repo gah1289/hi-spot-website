@@ -1,7 +1,8 @@
+from tkinter.tix import Select
 from unicodedata import category
 from flask import Flask
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, IntegerField, SelectField, DateField, TimeField, EmailField
+from wtforms import StringField, PasswordField, TextAreaField, IntegerField, DecimalField, SelectField, DateField, TimeField, EmailField
 from wtforms.validators import DataRequired, Email, Length, NumberRange
 
 import email_validator 
@@ -23,7 +24,7 @@ class LoginForm(FlaskForm):
 
 class BoardMembersForm(FlaskForm):
     """Form for adding and changing members of the board"""
-    president=SelectField('President', coerce=int)
+    president=SelectField('President', coerce=int, default='Bob Pratte')
     vp=SelectField('Vice President', coerce=int)
     treasurer=SelectField('Treasurer', coerce=int)
     secretary=SelectField('Secretary', coerce=int)
@@ -41,4 +42,25 @@ class AddEventForm(FlaskForm):
     end_time=TimeField('End Time', validators=[DataRequired()])
     location_name=StringField('Name of Location', validators=[DataRequired()])
     location_address=TextAreaField('Address', validators=[DataRequired()])
+
+class BankForm(FlaskForm):
+    invoice=IntegerField('Invoice Number')
+    due=DateField('Due Date')
+    amount=DecimalField('Payment Amount', validators=[DataRequired()])
+    name=StringField('Full Name', validators=[DataRequired()])    
+
+class CreditCardForm(FlaskForm):
+    name=StringField('Full Name', validators=[DataRequired()])
+    invoice=IntegerField('Invoice Number', default=1234)
+    due_date=DateField('Due Date')
+    amount=StringField('Payment Amount', validators=[DataRequired()])        
+    ccn=StringField('Credit Card Number', validators=[DataRequired()], default='4000000000000077')
+    exp_month= StringField('Expiration (mm)', validators=[DataRequired(), Length(2)], default='05')
+    exp_year= StringField('Expiration (yyyy)', validators=[DataRequired(), Length(4)], default='2024')
+    security_code=StringField('Security Code', validators=[DataRequired()], default=111)
+
+
+    email=EmailField('Email', validators=[DataRequired()])
+
     
+

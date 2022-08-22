@@ -8,12 +8,14 @@ from flask_debugtoolbar import DebugToolbarExtension
 from requests import Session
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
 
-from secret import secret_stripe_key, fa_token
 
-from models import db, connect_db, User, Board, Photo, Event, bcrypt
-from forms import AddEventForm, UserAddForm, LoginForm, BoardMembersForm
+# from secret import secret_stripe_key, fa_token
+from popup import show_modal
 
-publishable_stripe_key = 'pk_test_51LUyPRBQnQlv8BXXSDB4CdqhM5Rpnhx4lWMAcSUdjbORzGhy4h2JKYOtzFhcp8KhDc87cQPAOIE23Gc18Kkzlfs200S6ufWWXU'
+from models import Admin, db, connect_db, User, Board, Photo, Event, bcrypt, Admin, Payment
+from forms import AddEventForm, UserAddForm, LoginForm, BoardMembersForm, BankForm, CreditCardForm
+
+publishable_stripe_key = 'sk_test_51LUyPRBQnQlv8BXXTCh2ILwiMp3C2t25xOkVkmbOUZhY5BFSTHgRLItXOGrIlL4ep2VpDghjgYjt4DgKIxE1ONap00rkA9Vk1X'
 # test mode
 
 
@@ -33,7 +35,9 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
-print('*******connect_db(app) in app.py*********')
+
+
+
 
 @app.before_request
 def add_user_to_g():
@@ -41,11 +45,11 @@ def add_user_to_g():
 
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
-        print(f'**************g.user = {g.user}*************')
+
 
     else:
         g.user = None
-        print('**************No g.user*************')
+
 
 
 def do_login(user):
@@ -64,8 +68,11 @@ def do_logout():
 def get_board_ids():
     """Get a list of board id's to use in HTML so only board members have access to certain links"""
     board=Board.query.all()
+    admin=Admin.query.all()
     board_ids=[]
     for member in board:
+        board_ids.append(member.user_id)
+    for member in admin:
         board_ids.append(member.user_id)
     return board_ids
 
@@ -318,14 +325,20 @@ def edit_board_members():
 
     
     board=[(b.user.id, f'{b.user.first_name} {b.user.last_name}') for b in Board.query.all()]
-    form=BoardMembersForm(obj=board)    
+    form=BoardMembersForm(president=1)    
     # why isn't it automatically filling up with board member info when I do BoardMembersForm(obj=board)?
+    
 
-    pres=Board.query.filter_by(position='President').one_or_none()
-    print('***********')
-    print(pres)
     
     user_choices=[(int(u.id), f'{u.first_name} {u.last_name}') for u in User.query.all()]
+
+    president=Board.query.filter_by(position="President").one_or_none()
+    vp=Board.query.filter_by(position="Vice President").one_or_none()
+    treasurer=Board.query.filter_by(position="Treasurer").one_or_none()
+    alternate=Board.query.filter_by(position="Alternate").one_or_none()
+    director=Board.query.filter_by(position="Director").one_or_none()
+    secretary=Board.query.filter_by(position="Secretary").one_or_none()
+
   
     form.president.choices=user_choices 
     form.vp.choices=user_choices
@@ -334,39 +347,50 @@ def edit_board_members():
     form.director.choices=user_choices 
     form.alternate.choices=user_choices
 
-    # if form.validate_on_submit():        
+    form.president.default='Bob Pratte'
+    form.process()
 
-    #    president=Board(
-    #         position='President',
-    #         user_id=form.president.data
-    #     )
-    #    vp=Board(
-    #         position='Vice President',
-    #         user_id=form.vp.data
-    #     )
-    #    treasurer=Board(
-    #         position='Treasurer',
-    #         user_id=form.treasurer.data
-    #     )
-    #    secretary=Board(
-    #         position='Secretary',
-    #         user_id=form.secretary.data
-    #     )
-    #    director=Board(
-    #         position='Director',
-    #         user_id=form.director.data
-    #     )
-    #    alternate=Board(
-    #         position='Alternate',
-    #         user_id=form.alternate.data
-    #     )
 
-    #    Board.query.delete()
-    #    db.session.add_all([president, vp, treasurer, secretary,director,alternate])
-    #    db.session.commit()
+    if form.validate_on_submit():
+        try:       
+            president.user_id=form.president.data
+            vp.user_id=form.vp.data
+            treasurer.user_id=form.treasurer.data
+            alternate.user_id=form.alternate.data
+            secretary.user_id=form.secretary.data
+            director.user_id=form.director.data 
+            db.session.commit()   
+        except: 
+            president=Board(
+                position='President',
+                user_id=form.president.data
+                )
+            vp=Board(
+                position='Vice President',
+                    user_id=form.vp.data
+                )
+            treasurer=Board(
+                    position='Treasurer',
+                    user_id=form.treasurer.data
+                )
+            secretary=Board(
+                    position='Secretary',
+                    user_id=form.secretary.data
+                    )
+            director=Board(
+                    position='Director',
+                    user_id=form.director.data
+                    )
+            alternate=Board(
+                    position='Alternate',
+                    user_id=form.alternate.data
+                    )
+            Board.query.delete()
+            db.session.add_all([president,vp,treasurer,secretary,director,alternate])
+            db.session.commit()
 
-    #    flash('Successfully updated board!', 'success')
-    #    return redirect('/contact')
+            flash('Successfully updated board!', 'success')
+            return redirect('/contact')
     
     return render_template('board.html', form=form, board_ids=board_ids)
 
@@ -386,8 +410,118 @@ def delete_event(id):
     return redirect('/events')
 
 
+@app.route('/pay')
+def ask_payment_method():
+    '''Ask user if they want to pay by cc or bank'''
+    if not g.user:
+        flash('Please log in', "danger")
+    redirect('/')
+    form=CreditCardForm()
+
+    return render_template('pay/plain_cc.html', form=form)
+
+@app.route('/card', methods=["GET", "POST"])
+def show_payment_form():
+    """Show payment form"""
+    if not g.user:
+        flash('Please log in', "danger")
+        redirect('/')
+    
+    form=CreditCardForm()
+
+    if form.validate_on_submit(): 
+        try:
+            customer=stripe.Customer.create(
+                name=form.name.data,
+                email=form.email.data
+                )
+
+            print('*******************')
+            print({form.name.data})
+            print(f'customer.id {customer.name}')
+
+            payment_method=stripe.PaymentMethod.create(
+                type='card',
+                card={
+                    'number': form.ccn.data,
+                    "cvc": form.security_code.data,
+                    'exp_month':int(form.exp_month.data),
+                    "exp_year":int(form.exp_year.data)},            
+                )
+        
+            print('*******************')
+            print(f'payment_method.id {payment_method.id}')
 
 
+            payment_intent=stripe.PaymentIntent.create(
+                    amount=((int(form.amount.data))*100),
+                    currency='usd',
+                    payment_method=payment_method.id,
+                    receipt_email=form.email.data,
+                    capture_method='automatic'
+                )
+            
+            stripe.PaymentIntent.confirm(
+                payment_intent.id
+            )
+            print('*******************')
+            print(f'payment_intent.id {payment_intent.id}')
+
+            product=stripe.Product.create(
+                name=f'Invoice {form.invoice.data}'
+            )
+
+            price=stripe.Price.create(
+                product=product.id,
+                currency='usd',
+                unit_amount=payment_intent.amount
+            )
+
+            checkout=stripe.checkout.Session.create(
+                    success_url='http://127.0.0.1:5000/',
+                    cancel_url="http://127.0.0.1:5000/pay",
+                    mode="payment",
+                    customer=customer.id,   
+                    line_items=[
+                        {
+                            "price": price.id,
+                            "quantity": 1
+                        }
+                    ]            
+                )
+            
+            
+
+            print(f'CHECKOUT :{checkout.id}')
+            pass  
+            flash(f'Successfully paid invoice {form.invoice.data}!', 'success')
+            return redirect('/')
+
+        except stripe.error.RateLimitError as e:
+        # Too many requests made to the API too quickly
+            pass
+        except stripe.error.InvalidRequestError as e:
+            flash(f'Payment failed: {e.user_message}', 'danger')
+            return redirect('/pay')
+            pass
+        except stripe.error.AuthenticationError as e:
+        # Authentication with Stripe's API failed
+        # (maybe you changed API keys recently)
+            pass
+        except stripe.error.APIConnectionError as e:
+        # Network communication with Stripe failed
+            pass
+        except stripe.error.StripeError as e:
+        # Display a very generic error to the user, and maybe send
+        # yourself an email
+            pass
+        except Exception as e:
+            flash('Payment not completed', 'danger')
+            pass  
+    
+    payment_intent=payment_intent.retrieve(payment_intent.id)
+    flash(f'Payment Failed: {payment_intent.last_payment_error.message}', 'danger') 
+    return redirect ('/pay')
 
 @app.template_filter('date')
 def date_format(value, format="%B %d, %Y"):

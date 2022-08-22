@@ -12,6 +12,7 @@ db = SQLAlchemy()
 class User(db.Model):
     """User in the HiSpot Database"""
     __tablename__='users'
+  
 
     id = db.Column(
         db.Integer,
@@ -47,9 +48,7 @@ class User(db.Model):
     )
 
     unit=db.Column(db.Integer)
-    print('***********CREATED USERS TABLE')
 
-    # board=db.relationship('Board', backref='user')
 
     def __repr__(self):
         return f"<{self.first_name} {self.last_name} in Unit {self.unit}>"
@@ -165,12 +164,7 @@ class Payment(db.Model):
         db.ForeignKey('users.id', ondelete='CASCADE'),
         nullable=False,
     )
-    stripe_customer_id=db.Column(
-        db.Text,
-        nullable=False
-    )
-    # customer id - get from API. stripe.Customer.retrieve(id, apikey=apikey)
-   
+     
     email=db.Column(
         db.Text,
         nullable=False
@@ -184,66 +178,35 @@ class Payment(db.Model):
         nullable=False,
         default='0'
     )
-    payment_method=db.Column(
+
+    stripe_customer_id=db.Column(
+        db.Text,
+        nullable=False
+    )
+    
+    checkout_id=db.Column(
         db.Text,
         nullable=False
     )
 
-    stripe_payment_id=db.Column(
+    payment_status =db.Column(
         db.Text,
         nullable=False
     )
+
+
+    invoice=db.Column(db.Integer)
+    due_date=db.Column(db.Date)
+    paid_date=db.Column(db.Date)
+
 
     user=db.relationship('User', backref="payments")
 
-    def create_customer(name, email, payment_method):
-        """Create customer with scalar values"""
-        customer = stripe.Customer.create(
-            name=name,
-            email=email,
-            payment_method=payment_method
-            )
-        return customer
     
-    def update_customer(name, email, payment_method):
-        """modify customer"""
-        modified_customer=stripe.Customer.modify(
-            name=name,
-            email=email,
-            payment_method=payment_method
-        )
-        return modified_customer
-    
-    def delete_customer(id):
-        """Delete customer"""
-        stripe.customer.delete(id=id)
-        return True
-
-    def create_payment_intent(amount, payment_method, receipt_email):
-        """Create a payment intent to confirm"""
-        payment_intent=stripe.PaymentIntent.create(
-            amount=amount,
-            currency='usd',
-            payment_method=payment_method,
-            receipt_email=receipt_email
-        )
-        return payment_intent
-    
-    def confirm_payment_intent(amount, payment_id, payment_method, receipt_email):
-        """confirm payment intent"""
-        payment_intent=stripe.PaymentIntent.confirm(payment_id, 
-            amount=amount,
-            currency='usd',
-            payment_method=payment_method,
-            receipt_email=receipt_email
-        )
-        return payment_intent  
 
     def __repr__(self):
         return f"<Payment: {self.amount}>"  
     
-    print('***********CREATED PAYMENT TABLE')
-
 class Event(db.Model):
     """Condo-related events"""
 
@@ -295,6 +258,29 @@ class Event(db.Model):
 
     print('***********CREATED EVENT TABLE')
 
+class Admin(db.Model):
+    """Admin in the HiSpot Database"""
+    __tablename__='administrators'
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=True
+    )  
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+    )
+
+    user=db.relationship('User')
+
+    def __repr__(self):
+        return f"<Admin: {self.username}>"
+
+    print('***********CREATED ADMIN TABLE')
+    
+
 
 def connect_db(app):
     """Connect this database to provided Flask app.
@@ -304,6 +290,5 @@ def connect_db(app):
     db.init_app(app)
     ("****************connect_db executed")
     return app
-
 
 
