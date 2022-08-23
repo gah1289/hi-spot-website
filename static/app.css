@@ -4,6 +4,21 @@ body {
 	padding: 0;
 }
 
+.hs-logo {
+	font-family: 'Pirata One', cursive;
+	color: #fff;
+	font-size: 96px;
+	font-weight: 700;
+}
+
+.on-winn {
+	font-family: 'Michroma', sans-serif;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 2px;
+}
+
 .hs-banner {
 	background-image: url("/static/images/hi-spot-banner.jpg");
 	height: 100vh;

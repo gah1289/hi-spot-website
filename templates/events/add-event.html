@@ -11,9 +11,9 @@
           {%for field in form if field.widget.input_type != 'hidden'%}
           <div class="row">
             <div class="col">{{field.label}}</div>
-            <div class="col">{{field}}</div>        
-          {%endfor%}
-        </div>
+            <div class="col">{{field}}</div> 
+          </div>       
+          {%endfor%}        
         <button class="btn btn-outline-success btn-block">Add to schedule</button>
       </form>
     </div>

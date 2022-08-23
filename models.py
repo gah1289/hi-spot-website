@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 import stripe
 
 
-
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
@@ -180,18 +179,18 @@ class Payment(db.Model):
     )
 
     stripe_customer_id=db.Column(
-        db.Text,
-        nullable=False
+        db.Text
+  
     )
     
     checkout_id=db.Column(
-        db.Text,
-        nullable=False
+        db.Text
+
     )
 
     payment_status =db.Column(
         db.Text,
-        nullable=False
+    
     )
 
 
@@ -205,7 +204,10 @@ class Payment(db.Model):
     
 
     def __repr__(self):
-        return f"<Payment: {self.amount}>"  
+        return f"<Payment: Invoice {self.invoice} for ${self.amount:.2f}>"  
+        # https://stackoverflow.com/questions/20457038/how-to-round-to-2-decimals-with-python
+    
+    print('***************IMPORTED USER')
     
 class Event(db.Model):
     """Condo-related events"""
@@ -256,7 +258,7 @@ class Event(db.Model):
     def __repr__(self):
         return f"<Event: {self.title}>"
 
-    print('***********CREATED EVENT TABLE')
+    print('***********IMPORTED EVENT')    
 
 class Admin(db.Model):
     """Admin in the HiSpot Database"""
@@ -278,7 +280,7 @@ class Admin(db.Model):
     def __repr__(self):
         return f"<Admin: {self.username}>"
 
-    print('***********CREATED ADMIN TABLE')
+    
     
 
 
@@ -288,7 +290,7 @@ def connect_db(app):
 
     db.app = app
     db.init_app(app)
-    ("****************connect_db executed")
+    
     return app
 
 

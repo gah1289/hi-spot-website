@@ -43,16 +43,6 @@ dan=User(
     unit=11
 )
 
-payment=Payment(
-    user_id=1,
-    stripe_customer_id='fdbvfbvees',
-    email='gah1289@gmail.com',
-    name='Gabby McCarthy',
-    amount=100,
-    payment_method='pm_card_visa',
-    stripe_payment_id='iuvorwfwrjf32'
-)
-
 gab.signup(first_name='Gabby',
     last_name='McCarthy',
     username='gah1289',
@@ -212,7 +202,7 @@ spring_meeting=Event(
     added_by=1
 )
 
-db.session.add_all([admin, payment, director, vp,president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
+db.session.add_all([admin, director, vp,president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
 
 db.session.commit()
 

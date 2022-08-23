@@ -15,11 +15,12 @@ from popup import show_modal
 from models import Admin, db, connect_db, User, Board, Photo, Event, bcrypt, Admin, Payment
 from forms import AddEventForm, UserAddForm, LoginForm, BoardMembersForm, BankForm, CreditCardForm
 
-publishable_stripe_key = 'sk_test_51LUyPRBQnQlv8BXXTCh2ILwiMp3C2t25xOkVkmbOUZhY5BFSTHgRLItXOGrIlL4ep2VpDghjgYjt4DgKIxE1ONap00rkA9Vk1X'
+stripe_key = 'sk_test_51LUyPRBQnQlv8BXXTCh2ILwiMp3C2t25xOkVkmbOUZhY5BFSTHgRLItXOGrIlL4ep2VpDghjgYjt4DgKIxE1ONap00rkA9Vk1X'
 # test mode
 
 
-stripe.api_key=publishable_stripe_key
+
+stripe.api_key=stripe_key
 
 CURR_USER_KEY = "curr_user"
 
@@ -199,7 +200,7 @@ def edit_user_info():
     """Allow user to edit profile information, must confirm password"""
     if not g.user:
         flash('Please log in', "danger")
-        redirect('/')
+        return redirect('/')
     
     form=UserAddForm(obj=g.user)
 
@@ -230,7 +231,8 @@ def show_upcoming_events():
     """Show upcoming events"""
     if not g.user:
         flash('Please log in', "danger")
-        redirect('/')
+        return redirect('/')
+
     current_date=datetime.date.today()
     events=Event.query.all()
 
@@ -239,10 +241,16 @@ def show_upcoming_events():
 @app.route('/add_event', methods=["GET", "POST"])
 def add_event():
     """Allow board member to add an event"""
-    if not g.user and g.user.id not in board_ids:
+    if not g.user or g.user.id not in board_ids:
         flash('Not authorized', "danger")
-        redirect('/')
- 
+        print(f'*************USER ID: {g.user.id}')
+        print(f'*************USER ID: {board_ids}')      
+        
+        return redirect('/')
+        
+    print(f'*************USER ID: {g.user.id}')
+    print(f'*************USER ID: {board_ids}')      
+
     form=AddEventForm()
     if form.validate_on_submit():
         event=Event(
@@ -262,7 +270,7 @@ def add_event():
         flash(f'Successfully added event: {event.title}!')
         return redirect('/events')
     
-    return render_template('events/add-event.html', form=form)
+    return render_template('events/add-event.html', form=form, board_ids=board_ids)
 
 @app.route('/events/<id>/cancel', methods=["GET","POST"])
 def cancel_event(id):
@@ -270,7 +278,7 @@ def cancel_event(id):
 
     if not g.user and g.user.id not in board_ids:
         flash('Not authorized', "danger")
-        redirect('/')  
+        return redirect('/')  
     
     event=Event.query.get_or_404(id)    
         
@@ -294,7 +302,7 @@ def reschedule_event(id):
 
     if not g.user and g.user.id not in board_ids:
         flash('Not authorized', "danger")
-        redirect('/')
+        return redirect('/')
 
     event=Event.query.get_or_404(id)
 
@@ -320,8 +328,9 @@ def reschedule_event(id):
 @app.route('/board', methods=["GET", "POST"])
 def edit_board_members():
     """Allow board members to edit the board"""
-    if not g.user and g.user.id not in board_ids:
-        flash('Not authorized', 'error')    
+    if not g.user or g.user.id not in board_ids:
+        flash('Not authorized', 'danger') 
+        return redirect('/')   
 
     
     board=[(b.user.id, f'{b.user.first_name} {b.user.last_name}') for b in Board.query.all()]
@@ -400,7 +409,7 @@ def delete_event(id):
 
     if not g.user and g.user.id not in board_ids:
         flash('Not authorized', "danger")
-        redirect('/')
+        return redirect('/')
 
     event=Event.query.get_or_404(id)
     db.session.delete(event)
@@ -415,17 +424,17 @@ def ask_payment_method():
     '''Ask user if they want to pay by cc or bank'''
     if not g.user:
         flash('Please log in', "danger")
-    redirect('/')
+        return redirect('/')
     form=CreditCardForm()
 
-    return render_template('pay/plain_cc.html', form=form)
+    return render_template('pay/plain_cc.html', form=form, board_ids=board_ids)
 
 @app.route('/card', methods=["GET", "POST"])
 def show_payment_form():
     """Show payment form"""
     if not g.user:
         flash('Please log in', "danger")
-        redirect('/')
+        return redirect('/')
     
     form=CreditCardForm()
 
@@ -436,10 +445,6 @@ def show_payment_form():
                 email=form.email.data
                 )
 
-            print('*******************')
-            print({form.name.data})
-            print(f'customer.id {customer.name}')
-
             payment_method=stripe.PaymentMethod.create(
                 type='card',
                 card={
@@ -449,8 +454,6 @@ def show_payment_form():
                     "exp_year":int(form.exp_year.data)},            
                 )
         
-            print('*******************')
-            print(f'payment_method.id {payment_method.id}')
 
 
             payment_intent=stripe.PaymentIntent.create(
@@ -464,9 +467,7 @@ def show_payment_form():
             stripe.PaymentIntent.confirm(
                 payment_intent.id
             )
-            print('*******************')
-            print(f'payment_intent.id {payment_intent.id}')
-
+   
             product=stripe.Product.create(
                 name=f'Invoice {form.invoice.data}'
             )
@@ -489,11 +490,8 @@ def show_payment_form():
                         }
                     ]            
                 )
-            
-            
-
-            print(f'CHECKOUT :{checkout.id}')
-            pass  
+                      
+          
             flash(f'Successfully paid invoice {form.invoice.data}!', 'success')
             return redirect('/')
 

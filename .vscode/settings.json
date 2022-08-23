@@ -2,5 +2,14 @@
     "editor.maxTokenizationLineLength": 2000000,
     "[javascript]": {
         "editor.maxTokenizationLineLength": 2000000
-    }
+    },
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        ".",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true
 }
