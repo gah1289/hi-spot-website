@@ -262,7 +262,7 @@ class UserModelTestCase(TestCase):
             resp=c.get('/')
             html=resp.get_data(as_text=True)
             self.assertIn('Edit Board', html)
-        
+    
             # add_event=c.get('/add_event', follow_redirects=True)
             # add_event_html=add_event.get_data(as_text=True)
             # self.assertIn('Add Event:', add_event_html)
@@ -271,6 +271,23 @@ class UserModelTestCase(TestCase):
             # edit_board_html=edit_board.get_data(as_text=True)
             # self.assertIn('Not authorized', edit_board_html)
             # self.assertNotIn('President', edit_board_html)
+
+            ######################Test route not workingas board member, but it works when I test it in person
+    
+    def test_logout(self):
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser.id
+        
+        resp=c.get('/logout', follow_redirects=True)
+        html=resp.get_data(as_text=True)
+
+        self.assertIn('Goodbye!', html)
+        self.assertIn('Hi-Spot', html)
+        self.assertIn('LOG IN', html)
+        self.assertNotIn('Email', html)
+            
+
 
 
 

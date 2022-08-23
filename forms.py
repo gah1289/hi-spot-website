@@ -12,7 +12,7 @@ class UserAddForm(FlaskForm):
     first_name=StringField('First Name', validators=[DataRequired()])
     last_name=StringField('Last Name', validators=[DataRequired()])    
     email = EmailField('E-mail', validators=[DataRequired(), Email()])
-    unit = IntegerField('Unit Number', validators=[DataRequired(), NumberRange(min=1,max=18)])
+    unit = IntegerField('Unit#', validators=[DataRequired(), NumberRange(min=1,max=18)])
 
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[Length(min=6)])

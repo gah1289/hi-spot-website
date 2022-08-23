@@ -6,9 +6,6 @@ from sqlite3 import connect
 from unittest import TestCase 
 
 
-
-
-
 os.environ['DATABASE_URL'] = "postgresql:///hispot_test"
 
 from app import app, CURR_USER_KEY, connect_db
