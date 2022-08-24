@@ -109,7 +109,7 @@ def login():
         
         if user:            
             do_login(user)
-            flash(f"Hello, {user.first_name}!", "primary")
+            flash(f"Hello, {user.first_name}!", "info")
             return redirect("/")
 
         flash("Invalid password!", 'danger')
@@ -147,7 +147,7 @@ def signup():
             return render_template('user/register.html', form=form)
 
         do_login(user)
-        flash(f"Welcome, {user.first_name}!", "primary")
+        flash(f"Welcome, {user.first_name}!", "info")
         return redirect("/")
 
     else:
@@ -158,7 +158,7 @@ def logout():
     """Handle logout of user."""
     
     do_logout()
-    flash('Goodbye!', 'primary')
+    flash('Goodbye!', 'info')
 
     return redirect('/')
 
@@ -170,7 +170,7 @@ def show_contact_page():
         board=Board.query.all()
         return render_template('contact.html',  board=board, board_ids=board_ids)
     else:
-        flash('Please log in or register', 'danger')
+        flash('Please log in or register', 'info')
         return redirect('/')
 
 @app.route('/docs')
@@ -267,7 +267,7 @@ def add_event():
         db.session.add(event)
         db.session.commit()
 
-        flash(f'Successfully added event: {event.title}!')
+        flash(f'Successfully added event: {event.title}!', 'info')
         return redirect('/events')
     
     return render_template('events/add-event.html', form=form, board_ids=board_ids)
@@ -293,7 +293,7 @@ def cancel_event(id):
         
     db.session.commit()
 
-    flash(f'{event.title} has been cancelled', 'error')
+    flash(f'{event.title} has been cancelled', 'warning')
     return redirect('/events')
 
 @app.route('/events/<id>/reschedule', methods=["GET","POST"])

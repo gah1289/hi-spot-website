@@ -24,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Pirata+One&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.typekit.net/uby8hgn.css">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/static/all.css">
 <link rel="stylesheet" href="/static/app.css">
@@ -34,6 +35,12 @@
   {%block head%} {%endblock%}
 </head>
 <body class="bg">  
+
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="mb-0  alert-{{category}} alert alert-dismissable fade show" role="alert">{{ message }} 
+    <button type="button" class="end-0 position-absolute alert-close alert-{{category}}" data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-circle-x"></i></button>
+    </div>    
+    {% endfor %}
         {% if g.user %}                       
             <div class="background">
                 <nav class="navbar hs-navbar navbar-expand-lg hs-nav stroke">
@@ -82,11 +89,11 @@
         {% endif %}   
 
 
-    {% for category, message in get_flashed_messages(with_categories=True) %}
-    <div class="mb-0 alert alert-{{ category }} alert-dismissable fade show" role="alert">{{ message }} 
-    <button type="button" class="btn-close position-absolute end-0" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="mb-0  alert-{{category}} alert alert-dismissable fade show" role="alert">{{ message }} 
+    <button type="button" class="end-0 position-absolute alert-close alert-{{category}}" data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-circle-x"></i></button>
     </div>    
-    {% endfor %}
+    {% endfor %} -->
     {% block content %}
     {% endblock %}
   

@@ -2,12 +2,14 @@ body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	font-family: 'Roboto';
+	font-family: proxima-soft, sans-serif;
+	font-weight: 400;
+	font-style: normal;
 	letter-spacing: 1.2px;
 }
 
 .bg {
-	background: url("/static/images/bg.png");
+	background: #fff;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -17,11 +19,11 @@ body {
 .hs-logo {
 	font-family: 'Pirata One', cursive;
 	color: #fff;
-	opacity: 0.8;
+	opacity: 0.9;
 	font-size: 150px;
-	font-weight: 900;
-	-webkit-text-stroke-width: .1px;
-	-webkit-text-stroke-color: #000;
+	font-weight: 400;
+	/* -webkit-text-stroke-width: .1px;
+	-webkit-text-stroke-color: #000; */
 	text-shadow: 1px 1px 0 #3457d5, -1px -1px 0 #3457d5, 1px -1px 0 #3457d5, -1px 1px 0 #3457d5, 1px 1px 0 #3457d5;
 }
 
@@ -34,7 +36,7 @@ body {
 }
 
 .hs-banner {
-	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/static/images/hi-spot-banner.jpg");
+	background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/static/images/hi-spot-banner.jpg");
 	background-position: center top;
 	height: 100vh;
 	width: 100%;
@@ -76,8 +78,7 @@ body {
 	border: 0.16em solid #ffffff;
 	color: #050903;
 	text-align: center;
-	transition: all 0.3s;
-	margin: 0 1px 1px 0;
+	transition: all 0.5s;
 }
 
 /* Login and Register */
@@ -112,15 +113,34 @@ body {
 .transparent-form a {
 	color: #e7f2f8;
 	text-decoration: underline 0.15em rgba(255, 255, 255, 0);
-	transition: text-decoration-color 300ms;
-	padding-left: 5px;
+	transition: ease 0.5s;
+	margin-left: 5px;
+	letter-spacing: 2.5px;
+	position: relative;
+	padding: 0.2em 0;
 	font-weight: 600;
-	letter-spacing: 2px;
 }
 
-.transparent-form a:hover {
-	text-decoration-color: rgba(255, 255, 255, 1);
+.transparent-form a::after {
+	transform: scale(0);
+	transform-origin: center;
+	content: '';
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 0.1em;
+	transition: opacity 300ms, transform 300ms;
+	background-color: #fff;
 }
+
+.transparent-form a:hover::after,
+.transparent-form a:focus::after {
+	transform: scale(1);
+}
+
+/* https://css-irl.info/animating-underlines/ */
 
 .transparent-form input {
 	align-self: center;
@@ -146,13 +166,13 @@ body {
 /* NAVBAR */
 
 .hs-navbar {
-	text-transform: uppercase;
-	letter-spacing: 1.5px;
-	font-weight: 300;
+	font-family: proxima-soft, sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
 
 nav {
-	width: 80%;
+	width: 100%;
 	margin: 0 auto;
 	padding: 50px 0;
 }
@@ -170,15 +190,14 @@ nav ul li a {
 	display: block;
 	padding: 15px;
 	text-decoration: none;
-	color: rgba(255, 255, 255, 0.7);
-	font-weight: 300;
+	color: rgb(183, 183, 183);
 	text-transform: uppercase;
 	margin: 0 10px;
 }
 
 .hs-navbar a:hover,
 nav ul li a:hover {
-	color: rgba(255, 255, 255, 1);
+	color: #000;
 }
 
 nav.stroke ul li a,
@@ -195,7 +214,7 @@ nav.fill ul li a:after {
 	width: 0%;
 	content: '.';
 	color: transparent;
-	background: #aaa;
+	background: rgb(65, 128, 223);
 	height: 1px;
 	transition: ease 0.5s;
 }
@@ -205,17 +224,17 @@ nav.stroke ul li a:hover:after {
 /* https://codepen.io/maheshambure21/pen/QwXaRw */
 
 .hs-nav-collapse {
-	background-color: #68839a;
+	background-color: #fff;
 }
 
 .hs-nav-collapse a {
-	color: rgba(255, 255, 255, 0.7);
+	color: rgba(185, 183, 183, 1);
 }
 
 .hs-nav-collapse a:hover {
-	background-color: #68839a;
 	width: fit-content;
-	color: #fff;
+	color: #000;
+	background-color: #fff;
 }
 
 /* Home Page */
@@ -223,23 +242,197 @@ nav.stroke ul li a:hover:after {
 .home-icon {
 	text-decoration: none;
 	text-align: center;
-	color: #fff;
+	color: rgb(183, 183, 183);
 	padding-top: 50px;
 	height: 250px;
 	top: 10px;
 	bottom: 10px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
 .home-icon:hover {
-	box-shadow: 0 10px 10px rgba(255, 255, 255, 0.075), 0 0 10px rgba(255, 255, 255, 0.6);
-	border: #fff;
-	text-decoration: none;
-	color: #fff;
-	transition: all 0.3s;
-	margin: 0 1px 1px 0;
+	color: inherit;
 }
 
-/* .home-icon-container {
-	background-color: rgba(255, 255, 255, 0.05);
-	backdrop-filter: blur(10px);
-} */
+.home-icon h5 {
+	color: #000;
+	font-weight: 700;
+}
+
+.blue:hover {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(57, 129, 246, 0.22);
+}
+
+.blue-gradient:before {
+	background: linear-gradient(
+		to right top,
+		#3ea1f6,
+		#3a9df7,
+		#3898f7,
+		#3894f7,
+		#398ff7,
+		#398bf7,
+		#3988f6,
+		#3a84f6,
+		#3980f6,
+		#397df6,
+		#3a79f6,
+		#3b75f6
+	);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-size: 72px;
+	display: initial;
+}
+
+/* https://stackoverflow.com/questions/12732663/text-gradient-with-font-awesome
+	https://mycolor.space/gradient3?ori=to
+	+ right
+	+ bottom&hex=%23B687FE&hex2=%23A669FA&hex3=%238936F5&submit=submit
+	https://dribbble.com/shots/14699183-Aero-glass-for-Icon/attachments/6397977?mode=media */
+
+.green:hover {
+	color: inherit;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(68, 244, 196, 0.22);
+}
+
+.green-gradient {
+	background-image: linear-gradient(
+		to right top,
+		#50f9cb,
+		#4bf6c8,
+		#45f4c4,
+		#3ff1c1,
+		#39eebd,
+		#34ebba,
+		#2ee9b7,
+		#28e6b4,
+		#23e3b0,
+		#1cdfad,
+		#15dca9,
+		#0bd9a6
+	);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-size: 72px;
+	display: initial;
+}
+
+.orange:hover {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(255, 142, 73, 0.22);
+}
+
+.orange-gradient {
+	background-image: linear-gradient(
+		to right top,
+		#ffb688,
+		#ffb07f,
+		#ffab75,
+		#ffa56c,
+		#ff9f63,
+		#ff9b5c,
+		#ff9656,
+		#ff924f,
+		#ff8e49,
+		#ff8b43,
+		#ff873d,
+		#ff8337
+	);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-size: 72px;
+	display: initial;
+}
+
+.purple:hover {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(164, 102, 250, 0.22);
+}
+.purple-gradient {
+	background-image: linear-gradient(
+		to right bottom,
+		#b687fe,
+		#b382fd,
+		#b07cfd,
+		#ad77fc,
+		#aa71fb,
+		#a66afa,
+		#a364fa,
+		#9f5df9,
+		#9a54f8,
+		#944bf7,
+		#8f41f6,
+		#8936f5
+	);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-size: 72px;
+	display: initial;
+}
+
+/* Alerts */
+
+.alert {
+	width: 60%;
+	padding: 12px 16px;
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	margin-bottom: 12px;
+	font-size: 16px;
+	position: absolute;
+	z-index: 1;
+	margin-top: 5px;
+	margin-left: 20%;
+	margin-right: 20%;
+	color: #fff;
+}
+
+.alert.alert-success {
+	background-color: rgba(227, 253, 235, 0.5);
+	border-color: rgba(38, 179, 3, 1);
+	color: rgba(60, 118, 61, 1);
+}
+
+.alert.alert-info {
+	background-color: rgba(217, 237, 247, 0.1);
+	color: #fff;
+	border-color: rgba(255, 255, 255, 0);
+}
+
+.alert.alert-warning {
+	background-color: rgba(252, 248, 227, 0.5);
+	border-color: rgba(177, 161, 129, 1);
+	color: rgba(138, 109, 59, 1);
+}
+
+.alert.alert-danger {
+	background-color: rgba(248, 215, 218, 0.5);
+	border-color: rgba(220, 53, 69, 1);
+	color: rgba(114, 28, 36, 1);
+}
+
+.alert-close {
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
+}
+
+.alert-danger.alert-close {
+	color: rgba(114, 28, 36, 1);
+}
+
+.alert-info.alert-close {
+	color: rgba(255, 255, 255, 1);
+}
+
+.alert-warning.alert-close {
+	color: rgba(138, 109, 59, 1);
+}
+
+.alert-success.alert-close {
+	color: rgba(60, 118, 61, 1);
+}
