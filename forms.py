@@ -52,12 +52,12 @@ class BankForm(FlaskForm):
 class CreditCardForm(FlaskForm):
     name=StringField('Full Name', validators=[DataRequired()])
     invoice=IntegerField('Invoice Number', default=1234)
-    due_date=DateField('Due Date')
+    
     amount=StringField('Payment Amount', validators=[DataRequired()])        
-    ccn=StringField('Credit Card Number', validators=[DataRequired()], default='4000000000000077')
-    exp_month= StringField('Expiration (mm)', validators=[DataRequired(), Length(2)], default='05')
-    exp_year= StringField('Expiration (yyyy)', validators=[DataRequired(), Length(4)], default='2024')
-    security_code=StringField('Security Code', validators=[DataRequired()], default=111)
+    ccn=StringField('Credit Card Number', validators=[DataRequired()], default='XXXX XXXX XXXX XXXX')
+    exp_month= StringField('Expiration (mm)', validators=[DataRequired(), Length(2)], default='XX')
+    exp_year= StringField('Expiration (yyyy)', validators=[DataRequired(), Length(4)], default='XXXX')
+    security_code=StringField('Security Code', validators=[DataRequired()])
 
 
     email=EmailField('Email', validators=[DataRequired()])

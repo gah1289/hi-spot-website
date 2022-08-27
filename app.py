@@ -1,12 +1,12 @@
 from ast import Add
 import os
-import stripe 
+import stripe, logging
 import datetime
 
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from requests import Session
-from sqlalchemy.exc import IntegrityError, PendingRollbackError
+from sqlalchemy.exc import IntegrityError, PendingRollbackError, UnboundExecutionError
 
 
 # from secret import secret_stripe_key, fa_token
@@ -86,8 +86,8 @@ def home_page():
     """Home Page"""
     
 
-    if not g.user:
-        return render_template('home-anon.html')
+    # if not g.user:
+    #     return render_template('home-anon.html')
     board_ids=get_board_ids()
     return render_template('home.html', board_ids=board_ids)
 
@@ -243,13 +243,10 @@ def add_event():
     """Allow board member to add an event"""
     if not g.user or g.user.id not in board_ids:
         flash('Not authorized', "danger")
-        print(f'*************USER ID: {g.user.id}')
-        print(f'*************USER ID: {board_ids}')      
+ 
         
         return redirect('/')
-        
-    print(f'*************USER ID: {g.user.id}')
-    print(f'*************USER ID: {board_ids}')      
+   
 
     form=AddEventForm()
     if form.validate_on_submit():
@@ -332,7 +329,7 @@ def edit_board_members():
         flash('Not authorized', 'danger') 
         return redirect('/')   
 
-    
+    print('*****************')
     board=[(b.user.id, f'{b.user.first_name} {b.user.last_name}') for b in Board.query.all()]
     form=BoardMembersForm(president=1)    
     # why isn't it automatically filling up with board member info when I do BoardMembersForm(obj=board)?
@@ -455,14 +452,23 @@ def show_payment_form():
                 )
         
 
-
-            payment_intent=stripe.PaymentIntent.create(
+            try:
+                payment_intent=stripe.PaymentIntent.create(
                     amount=((int(form.amount.data))*100),
                     currency='usd',
                     payment_method=payment_method.id,
                     receipt_email=form.email.data,
                     capture_method='automatic'
                 )
+            except stripe.error.CardError as e:
+                logging.error("A payment error occurred: {}".format(e.user_message))
+            except stripe.error.InvalidRequestError:
+                logging.error("An invalid request occurred.")
+            except Exception:
+                logging.error("Another problem occurred, maybe unrelated to Stripe.")
+            else:
+                logging.info("No error.")
+
             
             stripe.PaymentIntent.confirm(
                 payment_intent.id
@@ -499,26 +505,30 @@ def show_payment_form():
         # Too many requests made to the API too quickly
             pass
         except stripe.error.InvalidRequestError as e:
-            flash(f'Payment failed: {e.user_message}', 'danger')
+            flash("A payment error occurred: {}".format(e.user_message))
+            # pass
             return redirect('/pay')
-            pass
         except stripe.error.AuthenticationError as e:
-        # Authentication with Stripe's API failed
-        # (maybe you changed API keys recently)
-            pass
+            flash("A payment error occurred: {}".format(e.user_message))
+            # pass
+            return redirect('/pay')
         except stripe.error.APIConnectionError as e:
-        # Network communication with Stripe failed
-            pass
+            flash("A payment error occurred: {}".format(e.user_message))
+            # pass
+            return redirect('/pay')
         except stripe.error.StripeError as e:
-        # Display a very generic error to the user, and maybe send
-        # yourself an email
-            pass
+            flash("A payment error occurred: {}".format(e.user_message))
+            # pass
+            return redirect('/pay')       
         except Exception as e:
-            flash('Payment not completed', 'danger')
-            pass  
+            flash("A payment error occurred. Please check that the credit card number you entered is correct", "danger")
+            # pass
+            return redirect('/pay') 
+        
+    else: 
+        payment_intent=payment_intent.retrieve(payment_intent.id)
+        flash(f'Payment Failed: {payment_intent.last_payment_error.message}', 'danger') 
     
-    payment_intent=payment_intent.retrieve(payment_intent.id)
-    flash(f'Payment Failed: {payment_intent.last_payment_error.message}', 'danger') 
     return redirect ('/pay')
 
 @app.template_filter('date')

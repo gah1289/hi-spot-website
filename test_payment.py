@@ -8,24 +8,35 @@ from unittest import TestCase
 
 os.environ['DATABASE_URL'] = "postgresql:///hispot_test"
 
-from app import app, CURR_USER_KEY, connect_db
+from models import db, User, Payment, Event, bcrypt, Admin, Board, Photo
 
-connect_db(app)
+# BEFORE we import our app, let's set an environmental variable
+# to use a different database for tests (we need to do this
+# before we import our app, since that will have already
+# connected to the database
 
-from models import User, Event, Admin, Board, Photo, Payment, db
+os.environ['DATABASE_URL'] = "postgresql:///hispot_test"
+
+# Now we can import app
+
+from app import app, CURR_USER_KEY, cancel_event
 
 
 db.session.remove()
 db.drop_all()
 db.create_all()
 
+app.config['TESTING'] = True
+app.config['WTF_CSRF_ENABLED'] = False
+app.config['DEBUG_TB_HOSTS']=['dont=show-debug-toolbar']
+
 
 from datetime import date, datetime
 import stripe
 
 
-app.config['TESTING'] = True
-app.config['WTF_CSRF_ENABLED'] = False
+
+
 
 def create_stripe_checkout_session(card):
     customer=stripe.Customer.create(
@@ -170,7 +181,7 @@ class PaymentModelTestCase(TestCase):
     #     with self.client as c:
     #         with c.session_transaction() as sess:
     #             sess[CURR_USER_KEY] = self.testuser.id
-   
+
     #         good_card_data={
     #             "name": "Test User",
     #             "invoice": 1234,
@@ -184,7 +195,7 @@ class PaymentModelTestCase(TestCase):
     #         }
 
     #         resp=c.post("/card", data=good_card_data)
-    #         # resp=c.get('/')
+    #         resp=c.get('/', follow_redirects=True)
     #         html=resp.get_data(as_text=True)
     #         self.assertIn('paid', html)
 

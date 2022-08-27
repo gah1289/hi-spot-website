@@ -1,60 +1,120 @@
+/* HOME */
 body {
 	height: 100%;
+	width: 100vw;
 	margin: 0;
-	padding: 0;
 	font-family: proxima-soft, sans-serif;
 	font-weight: 400;
 	font-style: normal;
 	letter-spacing: 1.2px;
+	color: #fff;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+* {
+	font-size: 23px;
+}
+
+h1 {
+	font-weight: 700;
+	font-family: 'Roboto';
+}
+
+button {
+	font-size: 25px;
 }
 
 .bg {
-	background: #fff;
+	background: rgba(0, 0, 0, 0);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
 	height: 100%;
+	overflow-y: scroll;
 }
 
-.hs-logo {
-	font-family: 'Pirata One', cursive;
+.header {
 	color: #fff;
-	opacity: 0.9;
-	font-size: 150px;
-	font-weight: 400;
-	/* -webkit-text-stroke-width: .1px;
-	-webkit-text-stroke-color: #000; */
-	text-shadow: 1px 1px 0 #3457d5, -1px -1px 0 #3457d5, 1px -1px 0 #3457d5, -1px 1px 0 #3457d5, 1px 1px 0 #3457d5;
+	width: 100vw;
+}
+.header h1 {
+	padding-top: 10px;
+	font-family: 'Pirata One';
+	font-size: 75px;
 }
 
-.on-winn {
-	font-family: 'Michroma', sans-serif;
-	color: #fff;
+.header p {
+	font-family: 'Michroma';
+	text-transform: uppercase;
 	font-size: 16px;
-	font-weight: 700;
-	letter-spacing: 5px;
+	font-weight: 600;
 }
 
-.hs-banner {
-	background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/static/images/hi-spot-banner.jpg");
-	background-position: center top;
-	height: 100vh;
-	width: 100%;
-	background-repeat: no-repeat;
-	background-size: cover;
+.hs-copy {
+	background: rgba(0, 0, 0, 0.5);
+	padding: 20px;
+}
+
+.footer {
+	margin-top: 50px;
+	width: 100vw;
+	font-size: 20px;
+	font-family: 'Roboto';
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.wrap {
+	padding: 27px;
+	text-align: center;
+}
+
+.wrap a {
+	color: #3ea1f6;
+}
+
+.hover-fx {
+	font-size: 27px;
+	display: inline-block;
+	cursor: pointer;
+	margin: 15px;
+	width: 27px;
+	height: 27px;
+	line-height: 27px;
+	border-radius: 50%;
+	text-align: center;
 	position: relative;
-	text-align: center;
-	align-items: center;
+	color: #fff;
+	background-color: rgba(255, 255, 255, 0.1);
+	transition: 300ms;
 }
 
-.hs-banner-text {
-	text-align: center;
+.hover-fx:after {
+	pointer-events: none;
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: white;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	content: '';
+	box-sizing: content-box;
+	box-shadow: 0 0 0 1px #3ea1f6;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	transition: 300ms;
 }
+
+.hover-fx:hover {
+	background-color: #050903;
+	color: #3ea1f6;
+}
+
+.hover-fx:hover:after {
+	opacity: 1;
+	transform: scale(1.15);
+}
+
+/* Login and Register */
 
 .login-btn {
 	display: inline-block;
@@ -69,7 +129,6 @@ body {
 	text-align: center;
 	transition: all 0.15s;
 	margin: 0 0.3em 0.3em 0;
-	font-size: 18px;
 	margin-top: 5px;
 }
 
@@ -81,7 +140,9 @@ body {
 	transition: all 0.5s;
 }
 
-/* Login and Register */
+.form-control {
+	font-size: inherit;
+}
 
 .login-header {
 	margin-top: 5%;
@@ -94,22 +155,26 @@ body {
 }
 .transparent-form {
 	width: 65%;
-	position: absolute;
+	position: relative;
 	display: flex;
-	margin: auto;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
 	top: 5%;
 	bottom: 5%;
 	color: #fff;
 	box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3);
 	justify-content: center;
 	text-align: center;
+	margin-bottom: 50px;
 }
 
 /* https://dev.to/khush2706/frosted-glass-effect-in-css-27p4 */
 
-.transparent-form p {
-	font-size: 16px;
-}
+/* .transparent-form p {
+	font-size: inherit;
+} */
 .transparent-form a {
 	color: #e7f2f8;
 	text-decoration: underline 0.15em rgba(255, 255, 255, 0);
@@ -147,7 +212,7 @@ body {
 	color: #fff;
 	padding: 5px;
 	margin: 10px auto;
-	font-size: 20px;
+	font-size: 22px;
 	width: fit-content;
 	-webkit-text-fill-color: #fff !important;
 	-webkit-background-clip: text;
@@ -172,9 +237,8 @@ body {
 }
 
 nav {
-	width: 100%;
+	width: 100vw;
 	margin: 0 auto;
-	padding: 50px 0;
 }
 
 nav ul {
@@ -188,7 +252,7 @@ nav ul li {
 .hs-navbar,
 nav ul li a {
 	display: block;
-	padding: 15px;
+	padding: 0 15px 15px 5px;
 	text-decoration: none;
 	color: rgb(183, 183, 183);
 	text-transform: uppercase;
@@ -197,7 +261,7 @@ nav ul li a {
 
 .hs-navbar a:hover,
 nav ul li a:hover {
-	color: #000;
+	color: #fff;
 }
 
 nav.stroke ul li a,
@@ -214,7 +278,7 @@ nav.fill ul li a:after {
 	width: 0%;
 	content: '.';
 	color: transparent;
-	background: rgb(65, 128, 223);
+	background: rgb(145, 100, 67);
 	height: 1px;
 	transition: ease 0.5s;
 }
@@ -224,22 +288,26 @@ nav.stroke ul li a:hover:after {
 /* https://codepen.io/maheshambure21/pen/QwXaRw */
 
 .hs-nav-collapse {
-	background-color: #fff;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.account {
+	padding-right: 5vw;
 }
 
 .hs-nav-collapse a {
-	color: rgba(185, 183, 183, 1);
+	color: rgb(214, 214, 214);
 }
 
 .hs-nav-collapse a:hover {
 	width: fit-content;
-	color: #000;
-	background-color: #fff;
+	color: #fff;
+	background-color: inherit;
 }
 
 /* Home Page */
 
-.home-icon {
+/* .home-icon {
 	text-decoration: none;
 	text-align: center;
 	color: rgb(183, 183, 183);
@@ -285,7 +353,7 @@ nav.stroke ul li a:hover:after {
 	-webkit-text-fill-color: transparent;
 	font-size: 72px;
 	display: initial;
-}
+} */
 
 /* https://stackoverflow.com/questions/12732663/text-gradient-with-font-awesome
 	https://mycolor.space/gradient3?ori=to
@@ -293,7 +361,7 @@ nav.stroke ul li a:hover:after {
 	+ bottom&hex=%23B687FE&hex2=%23A669FA&hex3=%238936F5&submit=submit
 	https://dribbble.com/shots/14699183-Aero-glass-for-Icon/attachments/6397977?mode=media */
 
-.green:hover {
+/* .green:hover {
 	color: inherit;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(68, 244, 196, 0.22);
 }
@@ -372,28 +440,29 @@ nav.stroke ul li a:hover:after {
 	-webkit-text-fill-color: transparent;
 	font-size: 72px;
 	display: initial;
-}
+} */
 
 /* Alerts */
 
 .alert {
-	width: 60%;
+	width: 80vw;
 	padding: 12px 16px;
 	border-radius: 4px;
 	border-style: solid;
 	border-width: 1px;
 	margin-bottom: 12px;
-	font-size: 16px;
 	position: absolute;
 	z-index: 1;
 	margin-top: 5px;
-	margin-left: 20%;
-	margin-right: 20%;
+	margin-left: 10%;
+	margin-right: 10%;
 	color: #fff;
+	z-index: 1;
+	text-align: left;
 }
 
 .alert.alert-success {
-	background-color: rgba(227, 253, 235, 0.5);
+	background-color: rgba(227, 253, 235, 1);
 	border-color: rgba(38, 179, 3, 1);
 	color: rgba(60, 118, 61, 1);
 }
@@ -405,13 +474,13 @@ nav.stroke ul li a:hover:after {
 }
 
 .alert.alert-warning {
-	background-color: rgba(252, 248, 227, 0.5);
+	background-color: rgba(252, 248, 227, 1);
 	border-color: rgba(177, 161, 129, 1);
 	color: rgba(138, 109, 59, 1);
 }
 
 .alert.alert-danger {
-	background-color: rgba(248, 215, 218, 0.5);
+	background-color: rgba(248, 215, 218, 1);
 	border-color: rgba(220, 53, 69, 1);
 	color: rgba(114, 28, 36, 1);
 }
@@ -435,4 +504,178 @@ nav.stroke ul li a:hover:after {
 
 .alert-success.alert-close {
 	color: rgba(60, 118, 61, 1);
+}
+
+/* HOME PAGE */
+.home-logged-in {
+	background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/static/images/bg-2.jpg");
+	background-position: center top;
+	height: 100vh;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+	text-align: center;
+	align-items: center;
+	background-attachment: fixed;
+}
+
+/* DOCS */
+
+.doc-card-deck {
+	padding: 0 5%;
+}
+
+.dl-btn {
+	background-color: #fff;
+	position: relative;
+	width: 150px;
+	height: 50px;
+	color: rgb(8, 13, 19);
+	border: 2px solid #fff;
+	text-transform: uppercase;
+	font-family: 'Roboto';
+}
+
+.dl-btn * {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	transition: opacity .2s;
+}
+
+.dl-btn:hover {
+	background-color: rgba(255, 255, 255, 0);
+	color: #fff;
+}
+
+.dl-btn:focus {
+	width: 30px;
+	border-radius: 0;
+	border-style: none;
+	background-color: rgb(255, 255, 255, 0);
+}
+
+.dl-btn:focus .dl-btn-txt {
+	opacity: 0;
+}
+
+.dl-icon {
+	opacity: 0;
+}
+
+.dl-btn:focus .dl-icon {
+	opacity: 1;
+	font-size: 50px;
+	color: inherit;
+	transition-delay: .1s;
+	transition: opacity .5s;
+}
+
+.dl-btn:hover .dl-icon {
+	color: #fff;
+}
+
+.dl-all-btn {
+	width: 300px;
+}
+
+/* PAY */
+
+.pay-form {
+	text-align: left;
+	padding: 10px 50px 10px;
+}
+
+.pay-form h1 {
+	text-align: center;
+	margin-bottom: 25px;
+}
+
+.pay-form input {
+	margin: 5px;
+	width: 100%;
+	color: #fff;
+	background-color: rgba(255, 255, 255, 0.2);
+	border: none;
+}
+
+.pay-form input:focus {
+	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.075), 0 0 8px rgba(255, 255, 255, 0.6);
+	border: solid 1.2px #fff;
+	outline: none;
+}
+
+/* EVENTS */
+.event h1 {
+	text-align: left;
+}
+.event-card {
+	color: #fff;
+	background-color: rgba(3, 8, 14, 0.5);
+	backdrop-filter: blur(10px);
+	width: 60vw;
+}
+
+.event-card table {
+	color: #fff;
+}
+
+.event-btn {
+	display: inline-block;
+	padding: 0.5em 3em;
+	box-sizing: border-box;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	transition: all 0.15s;
+	margin: 0 0.3em 0.3em 0;
+	margin-top: 5px;
+}
+
+.event-add-btn {
+	color: #000;
+	background-color: #fff;
+	margin: 45px 0;
+	border: 0.16em solid #ffffff;
+}
+
+.event-add-btn:hover {
+	color: #fff;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.reschedule-btn {
+	color: #fff;
+	border: 0.16em solid #ffffff;
+}
+
+.delete-event:hover,
+.cancel-btn {
+	color: rgb(220, 53, 69);
+	border: 0.16em solid rgb(220, 53, 69);
+	background-color: rgba(220, 53, 69, 0);
+}
+
+.reschedule-btn:hover {
+	background-color: #fff;
+	border: 0.16em solid #ffffff;
+	color: #000;
+}
+
+.delete-event,
+.cancel-btn:hover {
+	background-color: rgb(220, 53, 69);
+	border: 0.16em solid rgb(220, 53, 69);
+	color: #000;
+}
+
+.modal-backdrop {
+	z-index: -1;
+}
+
+.modal * {
+	background-color: rgb(9, 19, 28);
 }

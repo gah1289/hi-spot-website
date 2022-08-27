@@ -23,8 +23,6 @@ from app import app, CURR_USER_KEY, cancel_event
 # Create our tables (we do this here, so we only create the tables
 # once for all tests --- in each test, we'll delete the data
 # and create fresh new clean test data
-
-
 db.create_all()
 
 app.config['TESTING'] = True

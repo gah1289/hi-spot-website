@@ -2,11 +2,13 @@ import email
 from email.policy import default
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
+
 import stripe
 
 
 bcrypt = Bcrypt()
-db = SQLAlchemy()
+
 
 class User(db.Model):
     """User in the HiSpot Database"""
@@ -42,8 +44,7 @@ class User(db.Model):
 
     email = db.Column(
         db.Text,
-        nullable=False,
-        unique=True
+        nullable=False
     )
 
     unit=db.Column(db.Integer)
@@ -195,7 +196,6 @@ class Payment(db.Model):
 
 
     invoice=db.Column(db.Integer)
-    due_date=db.Column(db.Date)
     paid_date=db.Column(db.Date)
 
 

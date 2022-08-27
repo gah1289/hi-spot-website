@@ -2,69 +2,33 @@ from app import db
 from models import User, Board, Payment, Photo, Event, Admin
 from datetime import date, time
 
-db.session.remove()
 # need to remove sessions or else tables won't drop
+db.session.remove()
 db.drop_all()
 db.create_all()
 
-gab=User(
-    first_name='Gabby',
+gab=User.signup(first_name='Gabby',
     last_name='McCarthy',
-    username='gah1289',
-    password='000000',
-    email='gah1289@gmail.com',
-    unit=6
-)
-
-reid=User(
-    first_name='Reid',
-    last_name='McCarthy',
-    username='rcm9551',
-    password='000000',
-    email='reidcmccarthy@gmail.com',
-    unit=6
-)
-
-bob=User(
-    first_name='Bob',
-    last_name='Pratte',
-    username='bobpratte',
-    password='000000',
-    email='bobpratte@gmail.com',
-    unit=16
-)
-
-dan=User(
-    first_name='Dan',
-    last_name='Jodoin',
-    username='danj',
-    password='000000',
-    email='danj@gmail.com',
-    unit=11
-)
-
-gab.signup(first_name='Gabby',
-    last_name='McCarthy',
-    username='gah1289',
+    username='admin',
     password='000000',
     email='gah1289@gmail.com',
     unit=6)
 
-reid.signup(first_name='Reid',
+reid=User.signup(first_name='Reid',
     last_name='McCarthy',
     username='rcm9551',
     password='000000',
     email='reidcmccarthy@gmail.com',
     unit=6)
 
-bob.signup(first_name='Bob',
+bob=User.signup(first_name='Bob',
     last_name='Pratte',
     username='bobpratte',
     password='000000',
     email='bobpratte@gmail.com',
     unit=16)
 
-dan.signup(
+dan=User.signup(
     first_name='Dan',
     last_name='Jodoin',
     username='danj',
@@ -82,18 +46,51 @@ bill=User.signup(
     unit=9
 )
 
+denise=User.signup(
+    first_name='Denise',
+    last_name='Fishlock',
+    username='denise',
+    password='000000',
+    email='denise@gmail.com',
+    unit=8
+)
+
+donna=User.signup(
+    first_name='Donna',
+    last_name='Talbot',
+    username='donna',
+    password='000000',
+    email='donna@gmail.com',
+    unit=12
+)
+
+scott=User.signup(
+    first_name='Scott',
+    last_name='Wade',
+    username='scott',
+    password='000000',
+    email='scott@gmail.com',
+    unit=1
+)
+
 
 db.session.commit()
 
 admin=Admin(user_id=1)
 
-president=Board(user_id=3,
+president=Board(id=1, user_id=3,
 position='President')
 
-vp=Board(user_id=5, position='Vice President')
+vp=Board(id=2, user_id=5, position='Vice President')
 
-director=Board(user_id=4,
+director=Board(id=5, user_id=4,
 position='Director')
+
+secretary=Board(id=4, user_id=6, position='Secretary')
+
+alternate=Board(id=6, user_id=7, position='Alternate')
+
+treasurer=Board(id=3, user_id=8, position='Treasurer')
 
 
 drone_1=Photo(
@@ -202,7 +199,7 @@ spring_meeting=Event(
     added_by=1
 )
 
-db.session.add_all([admin, director, vp,president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
+db.session.add_all([secretary,treasurer,alternate,admin, director, vp,president, drone_1, drone_2, drone_6, drone_7, drone_8, motel_1, motel_2, motel_3, motel_4, motel_5, motel_6, brochure, bw_hispot, receipt, fall_meeting, spring_meeting])
 
 db.session.commit()
 
