@@ -33,6 +33,8 @@
   
 <script src="https://kit.fontawesome.com/749260ee1e.js" crossorigin="anonymous"></script>
 
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
+
   {%block head%} {%endblock%}
 </head>
 <body class="bg home-logged-in">     
@@ -42,33 +44,48 @@
     <div class="mb-0  alert-{{category}} alert alert-dismissable fade show" role="alert">{{ message }} 
     <button type="button" class="end-0 position-absolute alert-close alert-{{category}}" data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-circle-x"></i></button>
     </div>    
-    {% endfor %}
-           
-        <div class="header">
-          <h1>Hi-Spot</h1>
-          <p>on Winnepesaukee</p>
+    {% endfor %}      
+    
+    <div class="container-fluid">
+      <div class="row align-items-start header">
+        <div class="col" id="hidden-col"></div>
+        <div class="col" id="logo-col"> 
+          <div class="header">
+          <span class="hs-logo">Hi-Spot</span> <br>
+          <span class="on-winn">on Winnepesaukee</span>
+        </div>
+        </div>
+        <div id="col">
+          <div class="row">
+            <div class="col"><div id="weather-icon"></div></div>
+            <div class="col p-2 align-text-start"> <div id="temperature"></div>
+            <div id="weather-description"></div></div>
+          </div>
+          
+         
         </div>                  
-
+      </div>
+    </div>
                 <nav class="navbar hs-navbar navbar-expand-lg hs-nav stroke">
                   <div class="container-fluid p-3">
-                    <a class=" hs-navbar navbar-brand" href="/"><i class="fa-solid fa-grid"></i> </a>
+                    <a class=" hs-navbar navbar-brand" href="/"><i class="fa-solid fa-grid hs-grid"></i> </a>
                     <button class="hs-navbar navbar-toggler" id="hamburger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                       <i class="fa-light fa-bars"></i>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        {% if not g.user %}
+                        <li >
+                          <a href="/photos">Gallery</a>
+                        </li>  
+                        {% if not g.user %}                        
                         <li>
                           <a href="/login">Resident Login</a>
                         </li>
                         {% elif g.user %}  
-                        
                         <li>
                           <a href="/events">Events</a>
                         </li>
-                        <li >
-                          <a href="/photos">Photos</a>
-                        </li>   
+                        
                         <li >
                           <a  href="/docs">Condo Docs</a>
                         </li>   
@@ -103,12 +120,12 @@
     {% endblock %}
   
     <footer>
-      <div class="sticky-bottom footer">
+      <div class="sticky-bottom foot">
         <div class="row">
           <div class="col"></div>
-        <div class="col">Hi-Spot Condominiums <br>
+        <div class="col"> <small> Hi-Spot Condominiums <br>
           277 Weirs Boulevard <br>
-          Laconia, NH 03246 <br></div>
+          Laconia, NH 03246</small></div>
         <div class="col wrap"><a href="https://www.facebook.com/groups/489741927725446" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook hover-fx"></i></a></div></div>
           <!-- https://codepen.io/SeedThemes/pen/ZpmEzx -->
 

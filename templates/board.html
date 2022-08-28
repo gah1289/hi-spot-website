@@ -2,17 +2,17 @@
 {%block title %} Hi-Spot Board {%endblock%}
 {%block content%}
 <div class="row justify-content-md-center">
-    <div class="col-md-4">
-      <h2 class="join-message">Edit Board</h2>
+    <div class="col-md-4 frosted-glass glass-form">
+      <h1 class="join-message">Edit Board</h1>
       <form method="POST" id="user_form">
         {{ form.hidden_tag() }}
 
         {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
-          <!-- {% for error in field.errors %}
+          {% for error in field.errors %}
             <span class="text-danger">{{ error }}</span>
-          {% endfor %} -->
+          {% endfor %}
           {{field.label}}
-        {{ field(placeholder=field.label.text, class="form-control") }}
+        {{ field(placeholder=2, class="form-control") }}
         {% endfor %}
 
         <p>To confirm changes, enter your password:</p>
@@ -26,8 +26,8 @@
         {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
 
         <div class="edit-btn-area">
-          <button class="btn btn-success">Update Board</button>
-          <a href="/board" class="btn btn-outline-secondary">Cancel</a>
+          <button class="event-btn glass-form-btn">Update Board</button>
+          <a href="/board" class="event-btn reschedule-btn">Cancel</a>
         </div>
       </form>
     </div>

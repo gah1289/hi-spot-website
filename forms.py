@@ -1,3 +1,4 @@
+from logging import PlaceHolder
 from tkinter.tix import Select
 from unicodedata import category
 from flask import Flask
@@ -24,7 +25,7 @@ class LoginForm(FlaskForm):
 
 class BoardMembersForm(FlaskForm):
     """Form for adding and changing members of the board"""
-    president=SelectField('President', coerce=int, default='Bob Pratte')
+    president=SelectField('President', coerce=int, default= 3)
     vp=SelectField('Vice President', coerce=int)
     treasurer=SelectField('Treasurer', coerce=int)
     secretary=SelectField('Secretary', coerce=int)

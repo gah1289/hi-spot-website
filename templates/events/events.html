@@ -4,11 +4,8 @@
 
 {% block content%}
 
-<div class="p-3 bg event">
+<div class="p-3 ms-4 bg event">  
 
-    
-
-    
 <h1>Upcoming: <br>
 {% if g.user.id in board_ids %}
 <a href="/add_event" class="event-btn event-add-btn text-start" role="button" aria-disabled="true"><i class="fa-solid fa-plus"></i> Add Event</a>
@@ -16,7 +13,7 @@
 </h1>
 {% for event in events |sort(attribute='date')%}
 {% if event.date >= current_date %}
-<div class="card mb-3 event-card" style="max-width: 75rem;">
+<div class="card mb-3 event-card">
     <div class="card-body text-start">
         <div class="row">
             <div class="col w-75">
@@ -24,7 +21,7 @@
 
             {% if event.description == 'This event has been rescheduled'%}
                 <p class="card-text">                    
-                    <span class="text-bg-warning"> {{event.description}}</span>
+                    <span class="text-warning"> {{event.description}}</span>
                     </p>
 
                     <table class="table">
@@ -46,10 +43,13 @@
                                 <address>{{event.location_address}}</address></td>
                         </tr>
                     </table>
+                    <div class="row">
+                        <p class="card-text"><small class="text-muted">Rescheduled by {{event.user.first_name}} {{event.user.last_name}}</small></p>
+                    </div>    
                               
                 {% elif event.description == 'This event has been cancelled'%}
                 <p class="card-text">                    
-                    <span class="text-bg-danger"> {{event.description}}</span>
+                    <span class="text-danger"> {{event.description}}</span>
                     </p>
                     <table class="table text-muted">
                         <tr>
@@ -95,6 +95,9 @@
                                 <address>{{event.location_address}}</address></td>
                         </tr>
                     </table>
+                    <div class="row">
+                        <p class="card-text"><small class="text-muted">Cancelled by {{event.user.first_name}} {{event.user.last_name}}</small></p>
+                    </div>    
                     {%endif%}
             </div>
 
@@ -128,20 +131,19 @@
                 The event will stay on the list, but it will show up as "cancelled"
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
-                <a href="/events/{{event.id}}/cancel" role="button" class="btn btn-danger">Cancel Event</a>
+                <button type="button" class="event-btn reschedule-btn" data-bs-dismiss="modal">Go Back</button>
+                <a href="/events/{{event.id}}/cancel" role="button" class="event-btn cancel-btn">Cancel Event</a>
                 </div>
               </div>
             </div>
         </div>
            {%endif%}
 
-                    {%if g.user.id == event.added_by %}
- 
+        {%if g.user.id == event.added_by %} 
                     <!-- Delete event modal  -->
         <div class="row">
             <div class="col w-30">
-            <button type="button" class="event-btn dnger-btn" data-bs-toggle="modal" data-bs-target="#deleteEvtModal">
+            <button type="button" class="event-btn delete-event" data-bs-toggle="modal" data-bs-target="#deleteEvtModal">
                 Delete <i class="fa-light fa-trash-can"></i>
                 </button>  
         </div>
@@ -158,14 +160,13 @@
                     The event will be removed from the list entirely.
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
-                    <a href="/events/{{event.id}}/delete" role="button" class="btn btn-danger">Delete Event</a>
+                    <button type="button" class="event-btn reschedule-btn" data-bs-dismiss="modal">Go Back</button>
+                    <a href="/events/{{event.id}}/delete" role="button" class="event-btn cancel-btn">Delete Event</a>
                     </div>
                 </div>
             </div>
-        </div>
-        
-                    
+        </div>      
+                
 
                     
                     {%endif%}

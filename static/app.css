@@ -10,19 +10,16 @@ body {
 	color: #fff;
 	overflow-x: hidden;
 	overflow-y: scroll;
+	font-size: 3.5vh;
 }
 
-* {
-	font-size: 23px;
-}
+/* * {
+	font-size: 3.5vh;
+} */
 
 h1 {
 	font-weight: 700;
 	font-family: 'Roboto';
-}
-
-button {
-	font-size: 25px;
 }
 
 .bg {
@@ -36,18 +33,18 @@ button {
 
 .header {
 	color: #fff;
-	width: 100vw;
-}
-.header h1 {
-	padding-top: 10px;
-	font-family: 'Pirata One';
-	font-size: 75px;
 }
 
-.header p {
+.hs-logo {
+	padding-top: 10px;
+	font-family: 'Pirata One';
+	font-size: 9vh;
+}
+
+.on-winn {
 	font-family: 'Michroma';
 	text-transform: uppercase;
-	font-size: 16px;
+	font-size: 2.4vh;
 	font-weight: 600;
 }
 
@@ -56,10 +53,23 @@ button {
 	padding: 20px;
 }
 
-.footer {
+.row.header > * {
+	width: 33%;
+	max-width: 33%;
+}
+
+.home-pic {
+	width: 45vw;
+}
+
+.drone-pic {
+	width: 45vw;
+}
+
+.foot {
 	margin-top: 50px;
 	width: 100vw;
-	font-size: 20px;
+	font-size: 2.6vh;
 	font-family: 'Roboto';
 	background-color: rgba(0, 0, 0, 0.3);
 }
@@ -74,13 +84,13 @@ button {
 }
 
 .hover-fx {
-	font-size: 27px;
+	font-size: 6vh;
 	display: inline-block;
 	cursor: pointer;
 	margin: 15px;
-	width: 27px;
-	height: 27px;
-	line-height: 27px;
+	width: 6vh;
+	height: 6vh;
+	line-height: 6vh;
 	border-radius: 50%;
 	text-align: center;
 	position: relative;
@@ -118,7 +128,7 @@ button {
 
 .login-btn {
 	display: inline-block;
-	padding: 0.5em 3em;
+	padding: 0.5em 2em;
 	box-sizing: border-box;
 	text-decoration: none;
 	text-transform: uppercase;
@@ -138,10 +148,6 @@ button {
 	color: #050903;
 	text-align: center;
 	transition: all 0.5s;
-}
-
-.form-control {
-	font-size: inherit;
 }
 
 .login-header {
@@ -172,9 +178,6 @@ button {
 
 /* https://dev.to/khush2706/frosted-glass-effect-in-css-27p4 */
 
-/* .transparent-form p {
-	font-size: inherit;
-} */
 .transparent-form a {
 	color: #e7f2f8;
 	text-decoration: underline 0.15em rgba(255, 255, 255, 0);
@@ -203,6 +206,10 @@ button {
 .transparent-form a:hover::after,
 .transparent-form a:focus::after {
 	transform: scale(1);
+}
+
+.login-form {
+	padding-bottom: 2vh;
 }
 
 /* https://css-irl.info/animating-underlines/ */
@@ -234,6 +241,10 @@ button {
 	font-family: proxima-soft, sans-serif;
 	font-weight: 400;
 	font-style: normal;
+}
+
+.hs-grid {
+	font-size: 5vh;
 }
 
 nav {
@@ -289,6 +300,7 @@ nav.stroke ul li a:hover:after {
 
 .hs-nav-collapse {
 	background-color: rgba(255, 255, 255, 0.2);
+	font-size: 3.5vh;
 }
 
 .account {
@@ -304,143 +316,6 @@ nav.stroke ul li a:hover:after {
 	color: #fff;
 	background-color: inherit;
 }
-
-/* Home Page */
-
-/* .home-icon {
-	text-decoration: none;
-	text-align: center;
-	color: rgb(183, 183, 183);
-	padding-top: 50px;
-	height: 250px;
-	top: 10px;
-	bottom: 10px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-}
-
-.home-icon:hover {
-	color: inherit;
-}
-
-.home-icon h5 {
-	color: #000;
-	font-weight: 700;
-}
-
-.blue:hover {
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(57, 129, 246, 0.22);
-}
-
-.blue-gradient:before {
-	background: linear-gradient(
-		to right top,
-		#3ea1f6,
-		#3a9df7,
-		#3898f7,
-		#3894f7,
-		#398ff7,
-		#398bf7,
-		#3988f6,
-		#3a84f6,
-		#3980f6,
-		#397df6,
-		#3a79f6,
-		#3b75f6
-	);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	font-size: 72px;
-	display: initial;
-} */
-
-/* https://stackoverflow.com/questions/12732663/text-gradient-with-font-awesome
-	https://mycolor.space/gradient3?ori=to
-	+ right
-	+ bottom&hex=%23B687FE&hex2=%23A669FA&hex3=%238936F5&submit=submit
-	https://dribbble.com/shots/14699183-Aero-glass-for-Icon/attachments/6397977?mode=media */
-
-/* .green:hover {
-	color: inherit;
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(68, 244, 196, 0.22);
-}
-
-.green-gradient {
-	background-image: linear-gradient(
-		to right top,
-		#50f9cb,
-		#4bf6c8,
-		#45f4c4,
-		#3ff1c1,
-		#39eebd,
-		#34ebba,
-		#2ee9b7,
-		#28e6b4,
-		#23e3b0,
-		#1cdfad,
-		#15dca9,
-		#0bd9a6
-	);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	font-size: 72px;
-	display: initial;
-}
-
-.orange:hover {
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(255, 142, 73, 0.22);
-}
-
-.orange-gradient {
-	background-image: linear-gradient(
-		to right top,
-		#ffb688,
-		#ffb07f,
-		#ffab75,
-		#ffa56c,
-		#ff9f63,
-		#ff9b5c,
-		#ff9656,
-		#ff924f,
-		#ff8e49,
-		#ff8b43,
-		#ff873d,
-		#ff8337
-	);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	font-size: 72px;
-	display: initial;
-}
-
-.purple:hover {
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(164, 102, 250, 0.22);
-}
-.purple-gradient {
-	background-image: linear-gradient(
-		to right bottom,
-		#b687fe,
-		#b382fd,
-		#b07cfd,
-		#ad77fc,
-		#aa71fb,
-		#a66afa,
-		#a364fa,
-		#9f5df9,
-		#9a54f8,
-		#944bf7,
-		#8f41f6,
-		#8936f5
-	);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	font-size: 72px;
-	display: initial;
-} */
 
 /* Alerts */
 
@@ -520,21 +395,54 @@ nav.stroke ul li a:hover:after {
 	background-attachment: fixed;
 }
 
+#weather-icon {
+	height: 15vh;
+	text-align: right;
+	margin-right: 0;
+}
+
+#weather-description {
+	font-size: 2.3vh;
+	text-transform: capitalize;
+	text-align: left;
+}
+
+#temperature {
+	font-weight: bold;
+	text-align: left;
+}
+
+.mph {
+	text-transform: lowercase;
+}
+
 /* DOCS */
 
 .doc-card-deck {
 	padding: 0 5%;
 }
 
+.doc-card-deck h5 {
+	font-size: 4vh;
+}
+
 .dl-btn {
 	background-color: #fff;
 	position: relative;
-	width: 150px;
-	height: 50px;
+	width: 16vw;
+	height: 10vh;
 	color: rgb(8, 13, 19);
 	border: 2px solid #fff;
 	text-transform: uppercase;
 	font-family: 'Roboto';
+	padding: 2vh;
+	font-size: 3.5vh;
+}
+
+.dl-all-btn {
+	width: 25vw;
+	height: 10vh;
+	padding-top: 10vh;
 }
 
 .dl-btn * {
@@ -583,25 +491,34 @@ nav.stroke ul li a:hover:after {
 
 /* PAY */
 
-.pay-form {
+.glass-form {
 	text-align: left;
 	padding: 10px 50px 10px;
 }
 
-.pay-form h1 {
+.glass-form h1 {
 	text-align: center;
 	margin-bottom: 25px;
 }
 
-.pay-form input {
+.glass-form input,
+.glass-form textarea,
+.glass-form select {
 	margin: 5px;
 	width: 100%;
 	color: #fff;
 	background-color: rgba(255, 255, 255, 0.2);
 	border: none;
+	color-scheme: dark;
+	font-size: inherit;
 }
 
-.pay-form input:focus {
+.glass-form input::placeholder {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.glass-form input:focus,
+.glass-form textarea:focus {
 	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.075), 0 0 8px rgba(255, 255, 255, 0.6);
 	border: solid 1.2px #fff;
 	outline: none;
@@ -635,13 +552,16 @@ nav.stroke ul li a:hover:after {
 	margin-top: 5px;
 }
 
+.glass-form-btn,
 .event-add-btn {
 	color: #000;
 	background-color: #fff;
 	margin: 45px 0;
 	border: 0.16em solid #ffffff;
+	font-size: 3.5vh;
 }
 
+.glass-form-btn:hover,
 .event-add-btn:hover {
 	color: #fff;
 	background-color: rgba(0, 0, 0, 0);

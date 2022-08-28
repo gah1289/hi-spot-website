@@ -3,8 +3,9 @@
 {% block content %}
 
   <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-6 align-items-left event-card  glass-form">
       <form method="POST">
+        {{ form.csrf_token }}
         {{ form.hidden_tag() }}
         <div>
           <h1>Add Event:</h1>
@@ -13,9 +14,11 @@
             <div class="col">{{field.label}}</div>
             <div class="col">{{field}}</div> 
           </div>       
-          {%endfor%}        
-        <button class="btn btn-outline-success btn-block">Add to schedule</button>
+          {%endfor%}
+          <div class="d-grid gap-2">       
+        <button class="event-btn glass-form-btn"><i class="fa-solid fa-plus"></i> Add to schedule</button>
       </form>
+    </div> 
     </div>
   </div>
 

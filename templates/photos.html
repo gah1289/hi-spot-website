@@ -2,12 +2,12 @@
 {%block title %} Hi-Spot Photos {%endblock%}
 {%block content %}
 
- <div class="row p-1">
+ <div class="row p-5">
     {%for photo in photos %}
     <div class="col-md-4">
       <div class="thumbnail">
         <a href="{{photo.url}}">
-          <img src="{{photo.url}}" alt="{{photo.desc}}" style="width:100%">
+          <img class="rounded" src="{{photo.url}}" alt="{{photo.desc}}" style="width:100%">
         </a>
           <div class="caption">
             <p><i class="fa-light fa-camera"></i>  {{photo.name}}</p>

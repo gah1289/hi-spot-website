@@ -47,7 +47,6 @@ def add_user_to_g():
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
 
-
     else:
         g.user = None
 
@@ -85,9 +84,6 @@ get_board_ids()
 def home_page():
     """Home Page"""
     
-
-    # if not g.user:
-    #     return render_template('home-anon.html')
     board_ids=get_board_ids()
     return render_template('home.html', board_ids=board_ids)
 
@@ -186,14 +182,10 @@ def show_condo_docs():
 @app.route('/photos')
 def show_photo_gallery():
     """Show photos"""
-
-    if g.user:
-        
-        photos=Photo.query.all()
-        return render_template('photos.html', photos=photos, board_ids=board_ids)
-    else:
-        flash('Please log in or register', 'danger')
-        return redirect('/')
+       
+    photos=Photo.query.all()
+    return render_template('photos.html', photos=photos, board_ids=board_ids)
+   
 
 @app.route('/edit_profile', methods=["GET", "POST"])
 def edit_user_info():
@@ -328,16 +320,7 @@ def edit_board_members():
     if not g.user or g.user.id not in board_ids:
         flash('Not authorized', 'danger') 
         return redirect('/')   
-
-    print('*****************')
-    board=[(b.user.id, f'{b.user.first_name} {b.user.last_name}') for b in Board.query.all()]
-    form=BoardMembersForm(president=1)    
-    # why isn't it automatically filling up with board member info when I do BoardMembersForm(obj=board)?
     
-
-    
-    user_choices=[(int(u.id), f'{u.first_name} {u.last_name}') for u in User.query.all()]
-
     president=Board.query.filter_by(position="President").one_or_none()
     vp=Board.query.filter_by(position="Vice President").one_or_none()
     treasurer=Board.query.filter_by(position="Treasurer").one_or_none()
@@ -345,16 +328,19 @@ def edit_board_members():
     director=Board.query.filter_by(position="Director").one_or_none()
     secretary=Board.query.filter_by(position="Secretary").one_or_none()
 
+
+    form=BoardMembersForm(president=president.user_id, vp=vp.user_id, treasurer=treasurer.user_id, secretary=secretary.user_id, director=director.user_id, alternate=alternate.user_id)    
+
+      
+    user_choices=[('0', '-- select an option --')] +[(int(u.id), f'{u.first_name} {u.last_name}') for u in User.query.all()]
+    # without 0, select option first, all values default to user_id=1 https://lightrun.com/answers/wtforms-flask-wtf-add-empty-option-in-selectfield   
   
-    form.president.choices=user_choices 
+    form.president.choices=  user_choices 
     form.vp.choices=user_choices
     form.treasurer.choices=user_choices
     form.secretary.choices=user_choices
     form.director.choices=user_choices 
     form.alternate.choices=user_choices
-
-    form.president.default='Bob Pratte'
-    form.process()
 
 
     if form.validate_on_submit():

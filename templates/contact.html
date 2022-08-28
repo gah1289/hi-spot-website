@@ -11,18 +11,16 @@
         <br> Laconia, NH 03246</h2>
     </address>
     
-    <ul class="list-group list-group-flush">
-        <h2>Board:</h2>
+    <ul class="frosted-glass m-5">
+        <h2>Board Members:</h2>
         {% for member in board |sort(attribute="id") %}
-        <li class="list-group-item"><b>{{member.position}} </b> - {{member.user.first_name}} {{member.user.last_name}} Unit {{member.user.unit}}</li>
+        <li class="list-group-item p-2"><b>{{member.position}} </b> - {{member.user.first_name}} {{member.user.last_name}} Unit {{member.user.unit}}</li>
         {% endfor %}
       </ul>
 
-    <div class="row">
-        <a href="mailto:hispotboard@gmail.com" class="btn btn-outline-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">
+
+        <a href="mailto:hispotboard@gmail.com" class="event-btn reschedule-btn" tabindex="-1" role="button" aria-disabled="true">
             <i class="fa-light fa-envelope"></i>  Email the Board</a>
-    </div>
-</address>
 </div>
     
 {% endblock %}

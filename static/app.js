@@ -1,11 +1,27 @@
-const cancelEvtModal = document.getElementById('cancelEvtModal');
-const myInput = document.getElementById('myInput');
-const deleteEvtModal = document.getElementById('deleteEvtModal');
+// weather app
 
-cancelEvtModal.addEventListener('shown.bs.modal', () => {
-	myInput.focus();
-});
+async function getLaconiaWeather() {
+	const url = `https://api.openweathermap.org/data/2.5/weather?zip=03246,us&appid=16fd7721aa7d49db8f58e9dfa71e1f87&units=imperial`;
 
-deleteEvtModal.addEventListener('shown.bs.modal', () => {
-	myInput.focus();
-});
+	const $weatherIcon = $('#weather-icon');
+	const $temperature = $('#temperature');
+	const $weatherDesc = $('#weather-description');
+	try {
+		const res = await axios.get(url);
+		console.log(res);
+		const description = res.data.weather[0].description;
+		const icon = res.data.weather[0].icon;
+		const temp = res.data.main.temp;
+		const windSpeed = res.data.wind.speed;
+		$weatherIcon.append(`<img class='weather-icon' src=http://openweathermap.org/img/wn/${icon}@2x.png>`);
+		$temperature.append(`<span class="temp"> ${temp}&#176F </span>`);
+		$weatherDesc.append(
+			`<span class="weather-desc"> ${description} <br> <i class="fa-light fa-wind"></i> ${windSpeed} <span class="mph">mph</span></span>`
+		);
+	} catch (e) {
+		$weatherIcon.append('<i class="fa-solid fa-circle-exclamation"></i>');
+		$weatherDesc.append('Weather unavailable');
+	}
+}
+
+$(document).ready(getLaconiaWeather());
