@@ -120,34 +120,44 @@ def signup():
 
     If form not valid, present form.
 
-    If the there already is a user with that username: flash message
-    and re-present form.
+    If the there already is a user with that username: show error
+    and re-present form. If passwords do not match, show error.
     """
 
     form = UserAddForm()
 
+    usernames=[]
+    for user in User.query.all():
+        usernames.append(user.username)
+
     if form.validate_on_submit():
-        try:
-            user = User.signup(
-                first_name=form.first_name.data,
-                last_name=form.last_name.data,
-                email=form.email.data,
-                unit=form.unit.data,
-                username=form.username.data,
-                password=form.password.data,              
-            )
-            db.session.commit()
+        if form.username.data in usernames:
+            form.username.errors=["Username already taken."]
+        if form.reenter_pw.data != form.password.data:
+            form.password.errors=["Passwords do not match."]
+            print('*******************')
+            print(f'{form.reenter_pw.data} != {form.password.data}')
+        else:        
+            try:
+                user = User.signup(
+                    first_name=form.first_name.data,
+                    last_name=form.last_name.data,
+                    email=form.email.data,
+                    unit=form.unit.data,
+                    username=form.username.data,
+                    password=form.password.data,                     
+                )
+                db.session.commit()
+                
+            except IntegrityError:
+                flash("Error. Please try again", 'danger')
+                return render_template('user/register.html', form=form)
 
-        except IntegrityError:
-            flash("Username already taken", 'danger')
-            return render_template('user/register.html', form=form)
-
-        do_login(user)
-        flash(f"Welcome, {user.first_name}!", "info")
-        return redirect("/")
-
-    else:
-        return render_template('user/register.html', form=form)
+            do_login(user)
+            flash(f"Welcome, {user.first_name}!", "info")
+            return redirect("/")
+    
+    return render_template('user/register.html', form=form)
 
 @app.route('/logout')
 def logout():

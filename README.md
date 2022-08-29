@@ -1,1 +1,9 @@
-# hi-spot-website
+# Project Title
+
+Hi Spot Condominium Website
+
+
+# Description
+
+
+

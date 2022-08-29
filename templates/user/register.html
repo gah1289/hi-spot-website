@@ -2,14 +2,12 @@
 {%block title %} Register {%endblock%}
 {% block content %}
 
-<!-- <div class="hs-banner"> -->
   <div class="row justify-content-md-center bg">
     <div class="position-relative">
   <div class="transparent-form frosted-glass">
     <div class="col form-text-center">    
     <h2 class="login-header">Create Account</h2>
     <form method="POST">
-      <!-- removed id="user-form" -->
       {{ form.hidden_tag() }}
       {% for field in form if field.widget.input_type != 'hidden' %}
       
@@ -20,7 +18,7 @@
       {% endfor %}
       
       
-      <button class="btn login-btn">Sign me up!</button>
+      <button class="event-btn glass-form-btn">Sign me up!</button>
     </form>
   </div>
 </div>
