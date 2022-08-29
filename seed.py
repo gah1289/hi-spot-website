@@ -3,8 +3,9 @@ from models import User, Board, Photo, Event, Admin, db
 from datetime import date, time
 
 # need to remove sessions or else tables won't drop
-db.session.remove()
-db.drop_all()
+
+# db.session.remove()
+# db.drop_all()
 db.create_all()
 
 gab=User.signup(first_name='Gabby',
