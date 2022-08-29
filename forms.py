@@ -14,6 +14,12 @@ class UserAddForm(FlaskForm):
     password = PasswordField('Password', validators=[Length(min=6)])
     reenter_pw=PasswordField('Confirm Password', validators=[Length(min=6)])
 
+class ChangePasswordForm(FlaskForm):
+    new_password = PasswordField('New Password', validators=[Length(min=6)])
+    reenter_pw=PasswordField('Confirm Password', validators=[Length(min=6)])
+    old_password = PasswordField('Please Enter Your Old Password to Change', validators=[Length(min=6)])
+   
+
 class LoginForm(FlaskForm):
     """User login form"""
     username = StringField('Username', validators=[DataRequired()])

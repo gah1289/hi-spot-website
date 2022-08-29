@@ -2,35 +2,38 @@
 {%block title %} Edit Profile {%endblock%}
 
 {%block content %}
+
+
 <div class="row justify-content-md-center">
-    <div class="col-md-4 frosted-glass glass-form">
-      <h1 class="join-message">Edit Your Profile.</h1>
-      <form method="POST" id="user_form">
-        {{ form.hidden_tag() }}
+  <div class="col-md-4 frosted-glass glass-form">
+    <h1 class="join-message">Edit Your Profile.</h1>
+    <form method="POST" id="user_form">
+      {{ form.hidden_tag() }}
 
-        {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' and field.name != 'reenter_pw'%}
-          {% for error in field.errors %}
-            <span class="text-danger">{{ error }}</span>
-          {% endfor %}
-          {{field.label}}
-          {{ field(placeholder=field.label.text, class="form-control") }}
+      {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' and field.name != 'reenter_pw'%}
+        {% for error in field.errors %}
+          <span class="text-danger">{{ error }}</span>
         {% endfor %}
+        {{field.label}}
+        {{ field(placeholder=field.label.text, class="form-control") }}
+      {% endfor %}
 
-        <p>To confirm changes, enter your password:</p>
-        {% if form.password.errors %}
-          {% for error in form.password.errors %}
-            <span class="text-danger">
-            {{ error }}
-          </span>
-          {% endfor %}
-        {% endif %}
-        {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
+      <p>To confirm changes, enter your password:</p>
+      {% if form.password.errors %}
+        {% for error in form.password.errors %}
+          <span class="text-danger">
+          {{ error }}
+        </span>
+        {% endfor %}
+      {% endif %}
+      {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
 
-        <div class="edit-btn-area">
-          <button class="event-btn glass-form-btn">Update Profile</button>
-          <a href="/edit_profile" class="event-btn reschedule-btn">Cancel</a>
-        </div>
-      </form>
-    </div>
+      <div class="edit-btn-area">
+        <button class="event-btn glass-form-btn">Update Profile</button>
+        <a href="/edit_profile" class="event-btn reschedule-btn">Cancel</a>
+      </div>
+    </form>
   </div>
+</div>
+
 {%endblock%}

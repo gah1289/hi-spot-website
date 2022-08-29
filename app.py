@@ -12,7 +12,7 @@ from sqlalchemy.exc import IntegrityError
 # from secret import secret_stripe_key, fa_token
 
 from models import Admin, db, connect_db, User, Board, Photo, Event, bcrypt, Admin
-from forms import AddEventForm, UserAddForm, LoginForm, BoardMembersForm,  CreditCardForm
+from forms import AddEventForm, ChangePasswordForm, UserAddForm, LoginForm, BoardMembersForm,  CreditCardForm, ChangePasswordForm
 
 stripe_key = 'sk_test_51LUyPRBQnQlv8BXXTCh2ILwiMp3C2t25xOkVkmbOUZhY5BFSTHgRLItXOGrIlL4ep2VpDghjgYjt4DgKIxE1ONap00rkA9Vk1X'
 # test mode
@@ -25,10 +25,13 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = (
 #     os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
+# flask
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL',"postgresql:///hispot").replace("://", "ql://", 1)
+# heroku
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
@@ -226,6 +229,37 @@ def edit_user_info():
             return render_template('user/edit-user.html', form=form)
     
     return render_template('user/edit-user.html', form=form)
+
+@app.route('/change_pw', methods=["GET", "POST"])
+def change_password():
+    """Allow user to change their password"""
+    if not g.user:
+        flash('Please log in', "danger")
+        return redirect('/')
+    
+    form=ChangePasswordForm()
+
+    if form.validate_on_submit(): 
+        if form.reenter_pw.data != form.new_password.data:
+            form.new_password.errors=["Passwords do not match."]
+        else:
+            try:
+                password_correct=User.check_password(g.user.id, form.old_password.data)
+                if password_correct:               
+                    g.user.password=bcrypt.generate_password_hash(form.new_password.data).decode('UTF-8')
+                    db.session.commit()
+                    flash(f"Changed {g.user.username}'s password!", "success")   
+                    return redirect('/')
+                else:
+                    form.old_password.errors=["Password is incorrect"]
+               
+                 
+            except IntegrityError:
+                db.session.rollback()
+                flash("Error. Please try again.", 'danger')
+                return render_template('user/change-pw.html', form=form)
+    
+    return render_template('user/change-pw.html', form=form)
 
 
 @app.route('/events', methods=["GET", "POST"])
