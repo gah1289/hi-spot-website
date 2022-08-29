@@ -13,7 +13,7 @@ from models import db, User, Payment, Event, bcrypt, Admin, Board, Photo
 # before we import our app, since that will have already
 # connected to the database
 
-os.environ['DATABASE_URL'] = "postgresql:///hispot_test"
+# os.environ['DATABASE_URL'] = "postgresql:///hispot_test"
 
 # Now we can import app
 
