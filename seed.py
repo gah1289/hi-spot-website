@@ -1,5 +1,5 @@
 from app import db
-from models import User, Board, Payment, Photo, Event, Admin
+from models import User, Board, Photo, Event, Admin
 from datetime import date, time
 
 # need to remove sessions or else tables won't drop

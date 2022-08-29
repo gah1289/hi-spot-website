@@ -1,12 +1,7 @@
-from logging import PlaceHolder
-from tkinter.tix import Select
-from unicodedata import category
-from flask import Flask
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, IntegerField, DecimalField, SelectField, DateField, TimeField, EmailField
 from wtforms.validators import DataRequired, Email, Length, NumberRange
 
-import email_validator 
 
 class UserAddForm(FlaskForm):
     """User register form"""
