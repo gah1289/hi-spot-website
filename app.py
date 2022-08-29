@@ -12,7 +12,7 @@ from sqlalchemy.exc import IntegrityError
 # from secret import secret_stripe_key, fa_token
 
 from models import Admin, db, connect_db, User, Board, Photo, Event, bcrypt, Admin
-from forms import AddEventForm, UserAddForm, LoginForm, BoardMembersForm, BankForm, CreditCardForm
+from forms import AddEventForm, UserAddForm, LoginForm, BoardMembersForm,  CreditCardForm
 
 stripe_key = 'sk_test_51LUyPRBQnQlv8BXXTCh2ILwiMp3C2t25xOkVkmbOUZhY5BFSTHgRLItXOGrIlL4ep2VpDghjgYjt4DgKIxE1ONap00rkA9Vk1X'
 # test mode
@@ -25,9 +25,9 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = (
-#     os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL',"postgresql:///hispot").replace("://", "ql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL',"postgresql:///hispot").replace("://", "ql://", 1)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
