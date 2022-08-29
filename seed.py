@@ -3,7 +3,7 @@ from app import app
 from datetime import date, time
 
 # need to remove sessions or else tables won't drop
-connect_db(app)
+
 db.session.remove()
 db.drop_all()
 db.create_all()
