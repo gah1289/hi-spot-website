@@ -2,6 +2,7 @@ import os
 import stripe, logging
 import datetime
 
+
 from flask import Flask, render_template, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 # from requests import Session
