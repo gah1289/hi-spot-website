@@ -1,18 +1,16 @@
-from ast import Add
 import os
 import stripe, logging
 import datetime
 
-from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
+from flask import Flask, render_template, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
-from requests import Session
-from sqlalchemy.exc import IntegrityError, PendingRollbackError, UnboundExecutionError
+# from requests import Session
+from sqlalchemy.exc import IntegrityError
 
 
 # from secret import secret_stripe_key, fa_token
-from popup import show_modal
 
-from models import Admin, db, connect_db, User, Board, Photo, Event, bcrypt, Admin, Payment
+from models import Admin, db, connect_db, User, Board, Photo, Event, bcrypt, Admin
 from forms import AddEventForm, UserAddForm, LoginForm, BoardMembersForm, BankForm, CreditCardForm
 
 stripe_key = 'sk_test_51LUyPRBQnQlv8BXXTCh2ILwiMp3C2t25xOkVkmbOUZhY5BFSTHgRLItXOGrIlL4ep2VpDghjgYjt4DgKIxE1ONap00rkA9Vk1X'
