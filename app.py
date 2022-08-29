@@ -38,6 +38,8 @@ toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
+db.session.remove()
+db.drop_all()
 db.create_all()
 
 
