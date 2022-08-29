@@ -145,8 +145,6 @@ class Photo(db.Model):
     def __repr__(self):
         return f"<Photo Member: {self.url}>"
 
-    print('***********CREATED BOARD TABLE')
-
 class Payment(db.Model):
     """Person trying to make a payment online"""
 
@@ -202,10 +200,8 @@ class Payment(db.Model):
 
     def __repr__(self):
         return f"<Payment: Invoice {self.invoice} for ${self.amount:.2f}>"  
-        # https://stackoverflow.com/questions/20457038/how-to-round-to-2-decimals-with-python
-    
-    print('***************IMPORTED USER')
-    
+        # https://stackoverflow.com/questions/20457038/how-to-round-to-2-decimals-with-python    
+  
 class Event(db.Model):
     """Condo-related events"""
 
@@ -254,8 +250,7 @@ class Event(db.Model):
 
     def __repr__(self):
         return f"<Event: {self.title}>"
-
-    print('***********IMPORTED EVENT')    
+  
 
 class Admin(db.Model):
     """Admin in the HiSpot Database"""
