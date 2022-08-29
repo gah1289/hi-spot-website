@@ -2,7 +2,6 @@
 
 
 import os
-from sqlite3 import connect
 from unittest import TestCase 
 
 
