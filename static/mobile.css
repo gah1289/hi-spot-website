@@ -13,10 +13,10 @@ body {
 .header {
 	padding-top: 2vh;
 	width: 100%;
-	text-align: center;
+	text-align: left;
 	left: 0;
 	right: 0;
-	margin: 0 auto;
+	margin: 0 auto 3vh;
 }
 
 /* Header Section */
@@ -26,27 +26,39 @@ body {
 	margin-bottom: 0;
 }
 .on-winn {
-	font-size: 1.1vh;
+	font-size: 1.3vh;
 	margin-top: 0;
 	letter-spacing: 1vw;
+	position: absolute;
+	left: 7vw;
 }
 
-.weather-icon {
+#weather-app {
+	margin-left: 0;
+	padding: 0;
+}
+#weather-icon {
 	height: 10vh;
-	text-align: center;
+	position: absolute;
+	right: 0;
 }
 
 #temperature {
-	font-size: 2vh;
+	font-size: 3vh;
+	margin-right: 7.5vw;
 }
+
 #weather-description {
-	font-size: 1.5vh;
+	font-size: 1.9vh;
 	text-transform: uppercase;
+	position: absolute;
+	right: 12vw;
 }
 
 #logo-col {
 	flex: auto;
-	margin-bottom: 4vh;
+	margin-bottom: 1vh;
+	width: 50vw;
 }
 
 #hamburger {
@@ -229,4 +241,25 @@ body {
 
 #list-board {
 	width: 100vw;
+}
+
+/* PAY */
+#cc-form label {
+	width: 100vw;
+	font-size: 4vh;
+	text-transform: uppercase;
+	/* margin-bottom: -3vh; */
+	position: absolute;
+}
+
+#cc-form input {
+	width: 85vw;
+	padding: 0;
+	margin-top: 5vh;
+	height: 8vh;
+}
+
+#pay-submit {
+	font-size: 4vh;
+	margin-left: calc(var(--bs-gutter-x) * 0.5);
 }

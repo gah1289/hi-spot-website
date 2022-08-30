@@ -54,10 +54,10 @@ class BankForm(FlaskForm):
 
 class CreditCardForm(FlaskForm):
     name=StringField('Full Name', validators=[DataRequired()])
-    invoice=IntegerField('Invoice Number', default=1234)
+    invoice=IntegerField('Invoice Number')
     
     amount=StringField('Payment Amount', validators=[DataRequired()])        
-    ccn=StringField('Credit Card Number', validators=[DataRequired()], render_kw={"placeholder": "XXXX XXXX XXXX XXXX"})
+    ccn=StringField('Card Number', validators=[DataRequired()], render_kw={"placeholder": "XXXX XXXX XXXX XXXX"})
     exp_month= StringField('Exp. Month', validators=[DataRequired(), Length(2)], render_kw={"placeholder": "mm"})
     exp_year= StringField('Exp. Year', validators=[DataRequired(), Length(4)], render_kw={"placeholder": "yyyy"})
     security_code=StringField('Security Code', validators=[DataRequired()])
