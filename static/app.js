@@ -25,3 +25,14 @@ async function getLaconiaWeather() {
 }
 
 $(document).ready(getLaconiaWeather());
+
+const $payNow = $('#pay-now');
+const $paySpinner = $('#pay-spinner');
+const $payBtn = $('#pay-submit');
+
+$paySpinner.hide();
+
+$payBtn.click(function() {
+	$payNow.hide();
+	$paySpinner.show();
+});

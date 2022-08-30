@@ -2,16 +2,16 @@
 {%block title %} Hi-Spot Login {%endblock%}
 {% block content %}
 
-<!-- <div class="hs-banner"> -->
+
 <div class="row justify-content-md-center bg">
-  <div class="position-relative">
+  <div class="position-relative login-div">
   <div class="transparent-form frosted-glass login-form">
     <div class="col form-text-center">
       <h2 class="login-header">Welcome back.</h2>
       <p>Don't have an account? <a href="/register">Register here</a></p>
 
       <form method="POST">
-        <!-- removed id="user-form" -->
+
         {{ form.hidden_tag() }}
 
         {% for field in form if field.widget.input_type != 'hidden' %}
@@ -27,5 +27,5 @@
   </div>
 </div>
 </div>
-<!-- </div> -->
+
 {% endblock %}

@@ -57,11 +57,10 @@ class CreditCardForm(FlaskForm):
     invoice=IntegerField('Invoice Number', default=1234)
     
     amount=StringField('Payment Amount', validators=[DataRequired()])        
-    ccn=StringField('Credit Card Number', validators=[DataRequired()], default='XXXX XXXX XXXX XXXX')
-    exp_month= StringField('Expiration (mm)', validators=[DataRequired(), Length(2)], default='XX')
-    exp_year= StringField('Expiration (yyyy)', validators=[DataRequired(), Length(4)], default='XXXX')
+    ccn=StringField('Credit Card Number', validators=[DataRequired()], render_kw={"placeholder": "XXXX XXXX XXXX XXXX"})
+    exp_month= StringField('Exp. Month', validators=[DataRequired(), Length(2)], render_kw={"placeholder": "mm"})
+    exp_year= StringField('Exp. Year', validators=[DataRequired(), Length(4)], render_kw={"placeholder": "yyyy"})
     security_code=StringField('Security Code', validators=[DataRequired()])
-
 
     email=EmailField('Email', validators=[DataRequired()])
 

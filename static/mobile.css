@@ -4,10 +4,6 @@ body {
 	padding: 0;
 }
 
-.hs-logo {
-	font-size: 7vh;
-}
-
 .row.header > * {
 	width: 100%;
 	max-width: 100%;
@@ -15,6 +11,7 @@ body {
 }
 
 .header {
+	padding-top: 2vh;
 	width: 100%;
 	text-align: center;
 	left: 0;
@@ -22,9 +19,29 @@ body {
 	margin: 0 auto;
 }
 
+/* Header Section */
+
+.hs-logo {
+	font-size: 5vh;
+	margin-bottom: 0;
+}
+.on-winn {
+	font-size: 1.1vh;
+	margin-top: 0;
+	letter-spacing: 1vw;
+}
+
 .weather-icon {
-	height: 12vh;
+	height: 10vh;
 	text-align: center;
+}
+
+#temperature {
+	font-size: 2vh;
+}
+#weather-description {
+	font-size: 1.5vh;
+	text-transform: uppercase;
 }
 
 #logo-col {
@@ -32,8 +49,31 @@ body {
 	margin-bottom: 4vh;
 }
 
-#hidden-col {
-	width: 0;
+#hamburger {
+	font-size: 5vh;
+	font-weight: 900;
+	border: none;
+	color: #fff;
+}
+
+.foot {
+	padding: 0;
+}
+
+#hidden-header-col,
+#hidden-foot-col {
+	display: none;
+}
+
+#footer-text {
+	padding: 5vh 5vw;
+	display: inline-block;
+	margin: auto;
+	font-size: 2.3vh;
+}
+
+.hs-grid {
+	color: #fff;
 }
 
 .frosted-glass {
@@ -41,19 +81,25 @@ body {
 	backdrop-filter: blur(10px);
 }
 .transparent-form {
-	width: 90%;
+	width: 99vw;
 	position: absolute;
 	margin: 1%;
 	justify-content: center;
 	left: 0;
 	right: 0;
-	height: fit-content;
+	height: max-content;
 	padding-bottom: 10%;
 }
 
+.bg {
+	overflow-x: hidden;
+	width: 100vw;
+	margin: 0;
+}
+
 .login-header {
-	margin-top: 10%;
-	font-size: 45px;
+	margin-top: 2vh;
+	font-size: 5vh;
 }
 
 .transparent-form p {
@@ -90,23 +136,36 @@ body {
 	border: #fff;
 }
 
+.welcome-text {
+	padding: 0;
+	font-size: 2.2vh;
+}
+
 .event-card {
 	width: 100vw;
 }
 
-.hs-copy {
-	width: 95vw;
+.event {
+	margin: 2vw;
+}
+
+.hs-copy.col {
+	width: 100%;
 	display: block;
+	margin: 0;
 }
 
 .hs-pic {
 	width: 95vw;
+	margin: 0;
+	padding: 0;
 }
 
 .drone-pic {
-	width: 75vw;
+	width: 95vw;
 	overflow: hidden;
 	margin-top: 2vh;
+	margin-right: 0;
 }
 
 .event-card {
@@ -115,13 +174,59 @@ body {
 
 .reschedule-btn,
 .dl-btn,
-.event-add-btn,
 .event-btn {
 	width: 100%;
 	text-align: center !important;
 	align-items: center;
 }
 
+#add-evt {
+	width: 98%;
+	margin: 2vh 2vw 5vh;
+	align-self: center;
+	left: 0;
+	right: 0;
+	padding: 2%;
+	font-size: 3.5vh;
+}
+
 .hs-nav-collapse {
 	background-color: rgba(0, 0, 0, 0.7);
+}
+
+.col.form-text-center {
+	padding: 5%;
+}
+
+.login-form {
+	width: 98vw;
+}
+
+.login-div {
+	padding: 0;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+}
+
+#register-form {
+	margin-left: 0;
+	padding: 1%;
+}
+
+#register-form button,
+#register-form input {
+	width: 90vw;
+}
+
+/* Photos */
+
+.caption {
+	font-size: 2vh;
+	text-align: left;
+	text-transform: uppercase;
+}
+
+#list-board {
+	width: 100vw;
 }

@@ -4,12 +4,13 @@
 
 {% block content%}
 
-<div class="p-3 ms-4 bg event">  
+<div class="event">  
 
-<h1>Upcoming: <br>
-{% if g.user.id in board_ids %}
-<a href="/add_event" class="event-btn event-add-btn text-start" role="button" aria-disabled="true"><i class="fa-solid fa-plus"></i> Add Event</a>
-{%endif%}
+<h1>{% if g.user.id in board_ids %} 
+    <a href="/add_event" class="event-btn event-add-btn text-start" id="add-evt" role="button" aria-disabled="true"><i class="fa-solid fa-plus"></i> Add Event</a> <br>
+    {%endif%}
+    Upcoming: 
+
 </h1>
 {% for event in events |sort(attribute='date')%}
 {% if event.date >= current_date %}
@@ -95,9 +96,7 @@
                                 <address>{{event.location_address}}</address></td>
                         </tr>
                     </table>
-                    <div class="row">
-                        <p class="card-text"><small class="text-muted">Cancelled by {{event.user.first_name}} {{event.user.last_name}}</small></p>
-                    </div>    
+
                     {%endif%}
             </div>
 

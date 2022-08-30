@@ -48,7 +48,7 @@
     
     <div class="container-fluid">
       <div class="row align-items-start header">
-        <div class="col" id="hidden-col"></div>
+        <div class="col" id="hidden-header-col"></div>
         <div class="col" id="logo-col"> 
           <div class="header">
           <span class="hs-logo">Hi-Spot</span> <br>
@@ -95,7 +95,7 @@
                         <li >
                           <a  href="/contact">Contact</a>
                         </li>   
-                        {%if g.user.id in board_ids%}
+                        {%if g.user.id in admin_ids%}
                         <li >
                           <a href="/board">Edit Board</a>
                         </li>  
@@ -123,10 +123,10 @@
     <footer>
       <div class="sticky-bottom foot">
         <div class="row">
-          <div class="col"></div>
-        <div class="col"> <small> Hi-Spot Condominiums <br>
+          <div class="col" id="hidden-foot-col"></div>
+        <div class="col" id="footer-text"> Hi-Spot Condominiums <br>
           277 Weirs Boulevard <br>
-          Laconia, NH 03246</small></div>
+          Laconia, NH 03246</div>
         <div class="col wrap"><a href="https://www.facebook.com/groups/489741927725446" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook hover-fx"></i></a></div></div>
           <!-- https://codepen.io/SeedThemes/pen/ZpmEzx -->
 

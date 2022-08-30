@@ -5,7 +5,6 @@ import datetime
 
 from flask import Flask, render_template, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
-# from requests import Session
 from sqlalchemy.exc import IntegrityError
 
 
@@ -88,7 +87,10 @@ def home_page():
     """Home Page"""
     
     board_ids=get_board_ids()
-    return render_template('home.html', board_ids=board_ids)
+    admin_ids=[]
+    for admin in Admin.query.all():
+        admin_ids.append(admin.user_id)
+    return render_template('home.html', board_ids=board_ids, admin_ids=admin_ids)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -361,7 +363,11 @@ def reschedule_event(id):
 @app.route('/board', methods=["GET", "POST"])
 def edit_board_members():
     """Allow board members to edit the board"""
-    if not g.user or g.user.id not in board_ids:
+    admin_ids=[]
+    for admin in Admin.query.all():
+        admin_ids.append(admin.user_id)
+
+    if not g.user or g.user.id not in admin_ids:
         flash('Not authorized', 'danger') 
         return redirect('/')   
     
@@ -475,13 +481,12 @@ def show_payment_form():
             payment_method=stripe.PaymentMethod.create(
                 type='card',
                 card={
-                    'number': form.ccn.data,
-                    "cvc": form.security_code.data,
+                    'number': (form.ccn.data).replace(" ", ""),
+                    "cvc": form.security_code.data.strip(),
                     'exp_month':int(form.exp_month.data),
                     "exp_year":int(form.exp_year.data)},            
                 )
-        
-
+                    
             try:
                 payment_intent=stripe.PaymentIntent.create(
                     amount=((int(form.amount.data))*100),
@@ -532,27 +537,27 @@ def show_payment_form():
             return redirect('/')
 
         except stripe.error.RateLimitError as e:
-        # Too many requests made to the API too quickly
+
             pass
         except stripe.error.InvalidRequestError as e:
-            flash("A payment error occurred: {}".format(e.user_message))
-            # pass
+            flash("A payment error occurred: {}".format(e.user_message), 'danger')
+
             return redirect('/pay')
         except stripe.error.AuthenticationError as e:
-            flash("A payment error occurred: {}".format(e.user_message))
-            # pass
+            flash("A payment error occurred: {}".format(e.user_message), 'danger')
+
             return redirect('/pay')
         except stripe.error.APIConnectionError as e:
-            flash("A payment error occurred: {}".format(e.user_message))
-            # pass
+            flash("A payment error occurred: {}".format(e.user_message), 'danger')
+
             return redirect('/pay')
         except stripe.error.StripeError as e:
-            flash("A payment error occurred: {}".format(e.user_message))
-            # pass
+            flash("A payment error occurred: {}".format(e.user_message), 'danger')
+            
             return redirect('/pay')       
         except Exception as e:
             flash("A payment error occurred. Please check that the credit card number you entered is correct", "danger")
-            # pass
+  
             return redirect('/pay') 
         
     else: 

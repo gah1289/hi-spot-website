@@ -5,13 +5,15 @@
 {% block content %}
 
 <div class="text-center">
-    <h1>Hi-Spot Condominiums</h1>    
-    <address>
-        <h2>277 Weirs Boulevard
-        <br> Laconia, NH 03246</h2>
-    </address>
+   
     
-    <ul class="frosted-glass m-5">
+    <ul class="frosted-glass" id="list-board">
+        <h1>Hi-Spot Condominiums</h1>    
+        <address>
+            <h2>277 Weirs Boulevard
+            <br> Laconia, NH 03246</h2>
+        </address>
+        <hr>
         <h2>Board Members:</h2>
         {% for member in board |sort(attribute="id") %}
         <li class="list-group-item p-2"><b>{{member.position}} </b> - {{member.user.first_name}} {{member.user.last_name}} Unit {{member.user.unit}}</li>
