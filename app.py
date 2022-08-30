@@ -25,12 +25,12 @@ CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
 
 
-try:
-    app.config['SQLALCHEMY_DATABASE_URI'] = (
-        os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = (
+#     os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
 # flask
-except:
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL',"postgresql:///hispot").replace("://", "ql://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL',"postgresql:///hispot").replace("://", "ql://", 1)
 # heroku
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
