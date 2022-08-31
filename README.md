@@ -1,6 +1,5 @@
-# Project Title
+# Hi Spot Condominium Website
 
-Hi Spot Condominium Website
 https://hispot-website.herokuapp.com/
 
 
