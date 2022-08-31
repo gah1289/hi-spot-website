@@ -486,7 +486,7 @@ def show_payment_form():
                     'exp_month':int(form.exp_month.data),
                     "exp_year":int(form.exp_year.data)},            
                 )
-                    
+
             try:
                 payment_intent=stripe.PaymentIntent.create(
                     amount=((int(form.amount.data))*100),

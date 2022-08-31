@@ -130,6 +130,14 @@ h1 {
 
 /* Login and Register */
 
+#demo {
+	font-size: 2.1vh;
+}
+
+#login {
+	margin-bottom: 5vh;
+}
+
 .login-btn {
 	display: inline-block;
 	padding: 0.5em 2em;
