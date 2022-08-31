@@ -7,9 +7,9 @@
 <div class="row justify-content-md-center">
   <div class="col-md-4 frosted-glass glass-form">
     <h1 class="join-message">Edit Your Profile.</h1>
-    <form method="POST" id="user_form">
+    <form method="POST" id="edit_profile_form">
       {{ form.hidden_tag() }}
-
+      {{ form.csrf_token }}
       {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' and field.name != 'reenter_pw'%}
         {% for error in field.errors %}
           <span class="text-danger">{{ error }}</span>

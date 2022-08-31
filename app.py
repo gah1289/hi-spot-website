@@ -3,7 +3,7 @@ import stripe, logging
 import datetime
 
 
-from flask import Flask, render_template, flash, redirect, session, g
+from flask import Flask, render_template, flash, redirect, session, g, request
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
@@ -26,10 +26,10 @@ app = Flask(__name__)
 
 
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
 # flask
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL',"postgresql:///hispot").replace("://", "ql://", 1)
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL',"postgresql:///hispot").replace("://", "ql://", 1)
 # heroku
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -138,7 +138,7 @@ def signup():
     if form.validate_on_submit():
         if form.username.data in usernames:
             form.username.errors=["Username already taken."]
-        if form.reenter_pw.data != form.password.data:
+        if request.form['reenter_pw'] != form.password.data:
             form.password.errors=["Passwords do not match."]
             print('*******************')
             print(f'{form.reenter_pw.data} != {form.password.data}')
@@ -213,22 +213,29 @@ def edit_user_info():
 
     if form.validate_on_submit(): 
         try:
-            password_correct=User.check_password(g.user.id, form.password.data)
+            password_correct=User.check_password(g.user.id, form.password.data)            
             if password_correct:
                 g.user.first_name=form.first_name.data,
                 g.user.last_name=form.last_name.data,
                 g.user.email=form.email.data,
                 g.user.unit=form.unit.data,
                 g.user.username=form.username.data,
-                g.user.password=bcrypt.generate_password_hash(form.password.data).decode('UTF-8')   
+                g.user.password=bcrypt.generate_password_hash(form.password.data).decode('UTF-8')
+            
             else:
                 form.password.errors=["Password is incorrect"]
             db.session.commit()
             flash(f"Updated {g.user.username}'s profile!", "success") 
+            print('**********YAY')
+            return redirect('/')
         except IntegrityError:
             db.session.rollback()
             flash("Username already taken", 'danger')
+            print('**********BOO')
             return render_template('user/edit-user.html', form=form)
+        
+    else: print(f'******NO{form.errors}')
+
     
     return render_template('user/edit-user.html', form=form)
 
