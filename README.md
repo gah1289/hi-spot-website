@@ -15,7 +15,7 @@ A website made for Hi Spot Condominium Association on Lake Winnipesaukee, NH. Th
 
 ### Accessible to all
 
-***Home Page (Accessible to all):***
+**Home Page (Accessible to all):**
 - Hi-spot Logo and weather app for Laconia, NH at the top of the page
   - Weather app made via JS using OpenWeatherMap API (https://openweathermap.org/api)
 - Nav bar with grid that takes user back to home page and dropdown menu showing links to:
@@ -25,15 +25,15 @@ A website made for Hi Spot Condominium Association on Lake Winnipesaukee, NH. Th
 - Photo: aerial view of the condo
 - Footer with link to FaceBook page and address
 
-***Photo Gallery:***
+**Photo Gallery:**
 - View photos of Hi-spot, be able to click and enlarge, see who added the photo
 
-***User Login***:
+**User Login**:
 - User can log in with username and password
 - Link to register if user does not have an account
 - If password/username is wrong, error message appears
 
-***Register***:
+**Register**:
 - User must enter the following information to register:
   - First name
   - Last Name
@@ -45,7 +45,7 @@ A website made for Hi Spot Condominium Association on Lake Winnipesaukee, NH. Th
 
 ### Accessible to Logged in Users
 
-***Condo Events Page***
+**Condo Events Page**
 - Ability to view upcoming events. 
 - If event date is past current date, it moves to past events list.
 - Each event shows:
@@ -56,7 +56,7 @@ A website made for Hi Spot Condominium Association on Lake Winnipesaukee, NH. Th
   - End Time
   - Who added the event
 
-  - *Board members Only:*
+  - ***Board members Only:***
     - Can add event
     - Reschedule event
       - event description changes to "This event has been rescheduled" in yellow text
@@ -66,10 +66,10 @@ A website made for Hi Spot Condominium Association on Lake Winnipesaukee, NH. Th
     - Delete event
       - Remove event from list entirely
 
-***Condo Docs***
+**Condo Docs**
 - Ability to download condo docs individually or as a zip file
 
-***Pay Invoice***
+**Pay Invoice**
 - Pay online (ability to pay their monthly invoices via credit card)
   - Uses Stripe API (https://stripe.com/docs/api)
   - Stripe API handles all sensitive user information and ensures user protection
@@ -77,14 +77,14 @@ A website made for Hi Spot Condominium Association on Lake Winnipesaukee, NH. Th
 - Flashes message when payment is successul
 
 
-***Contact***
+**Contact**
 - View board contact information
 - Email board 
 
-*Edit Board (Accessible to Admin Only)*
+***Edit Board (Accessible to Admin Only)***
 - Ability to edit board members
 
-***Account (dropdown menu)***
+**Account (dropdown menu)**
 - Edit account information
 - Change Password
 - Log out
@@ -92,7 +92,7 @@ A website made for Hi Spot Condominium Association on Lake Winnipesaukee, NH. Th
 
 
 
-## To do:
+## Stretch Goals
   - Compensate for percentage Stripe takes out
   - Approval for user registration
   - Ensure security
@@ -101,7 +101,7 @@ A website made for Hi Spot Condominium Association on Lake Winnipesaukee, NH. Th
     - Bank information
     - Take out of test mode
   
-  ## Acknowledgements 
+## Acknowledgements 
 - Rahul Sharma, Springboard Mentor
 - CSS:
   - https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp
