@@ -26,8 +26,7 @@ app = Flask(__name__)
 
 
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = (
-#     os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
+# app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL', 'postgresql:///hispot'))
 # flask
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL',"postgresql:///hispot").replace("://", "ql://", 1)

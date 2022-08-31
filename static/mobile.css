@@ -75,6 +75,10 @@ body {
 	padding: 0;
 }
 
+div.foot > div.row > div.wrap {
+	text-align: right;
+}
+
 #hidden-header-col,
 #hidden-foot-col {
 	display: none;
@@ -85,6 +89,7 @@ body {
 	display: inline-block;
 	margin: auto;
 	font-size: 2.3vh;
+	position: absolute;
 }
 
 .hs-grid {
@@ -138,7 +143,7 @@ body {
 	color: #fff;
 	padding: 5px;
 	margin: 10px auto;
-	font-size: 20px;
+	font-size: 2.4vh;
 	width: fit-content;
 	-webkit-text-fill-color: #fff !important;
 	-webkit-background-clip: text;
@@ -158,10 +163,15 @@ body {
 
 .event-card {
 	width: 100vw;
+	font-size: 2.4vh;
 }
 
 .event {
 	margin: 2vw;
+}
+
+.event h1 {
+	font-size: 3.5vh;
 }
 
 .hs-copy.col {
@@ -193,6 +203,7 @@ body {
 	width: 100%;
 	text-align: center !important;
 	align-items: center;
+	font-size: 2.7vh;
 }
 
 #add-evt {
@@ -202,7 +213,7 @@ body {
 	left: 0;
 	right: 0;
 	padding: 2%;
-	font-size: 3.5vh;
+	font-size: 2.7vh;
 }
 
 .hs-nav-collapse {
@@ -234,6 +245,11 @@ body {
 	width: 90vw;
 }
 
+.event-card textarea,
+.event-card input {
+	width: 75vw;
+}
+
 /* Photos */
 
 .caption {
@@ -249,20 +265,30 @@ body {
 /* PAY */
 #cc-form label {
 	width: 100vw;
-	font-size: 4vh;
+	font-size: 2.5vh;
 	text-transform: uppercase;
-	/* margin-bottom: -3vh; */
+	margin-left: 2vw;
 	position: absolute;
 }
 
 #cc-form input {
 	width: 85vw;
 	padding: 0;
-	margin-top: 5vh;
+	margin-top: 3vh;
 	height: 8vh;
 }
 
 #pay-submit {
-	font-size: 4vh;
+	font-size: 3vh;
 	margin-left: calc(var(--bs-gutter-x) * 0.5);
+}
+
+/* DOCS */
+
+#doc-header h1 {
+	width: 100vw;
+}
+
+.dl-all-btn {
+	width: 60vw;
 }
