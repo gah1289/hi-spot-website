@@ -553,6 +553,10 @@ nav.stroke ul li a:hover:after {
 	outline: none;
 }
 
+#pay-submit {
+	margin: 7vh 5px;
+	width: 100%;
+}
 /* CONTACT */
 #list-board {
 	width: 60vw;
@@ -563,6 +567,15 @@ nav.stroke ul li a:hover:after {
 	margin-bottom: 3vh;
 }
 
+#email-btn {
+	width: max-content;
+	margin-bottom: 10vh;
+}
+
+#board-members {
+	margin-left: 33%;
+	margin-top: 5vh;
+}
 /* EVENTS */
 .event {
 	margin-left: 10vw;
@@ -596,6 +609,7 @@ nav.stroke ul li a:hover:after {
 	font-size: 3vh;
 	width: 75%;
 	text-align: center;
+	border-radius: 10px;
 }
 
 .glass-form-btn,
@@ -604,6 +618,10 @@ nav.stroke ul li a:hover:after {
 	background-color: #fff;
 	margin: 45px 0;
 	border: 0.16em solid #ffffff;
+}
+
+#add-evt {
+	width: max-content;
 }
 
 .glass-form-btn:hover,

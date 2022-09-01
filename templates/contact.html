@@ -4,10 +4,10 @@
 
 {% block content %}
 
-<div class="text-center">
+<div class="text-center frosted-glass">
    
     
-    <ul class="frosted-glass" id="list-board">
+    <ul  id="list-board">
         <h1>Hi-Spot Condominiums</h1>    
         <address>
             <h2>277 Weirs Boulevard
@@ -16,12 +16,12 @@
         <hr>
         <h2>Board Members:</h2>
         {% for member in board |sort(attribute="id") %}
-        <li class="list-group-item p-2"><b>{{member.position}} </b> - {{member.user.first_name}} {{member.user.last_name}} Unit {{member.user.unit}}</li>
+        <li class="list-group-item text-start" id="board-members"><b>{{member.position}} </b> - {{member.user.first_name}} {{member.user.last_name}} Unit {{member.user.unit}}</li>
         {% endfor %}
       </ul>
 
 
-        <a href="mailto:hispotboard@gmail.com" class="event-btn reschedule-btn" tabindex="-1" role="button" aria-disabled="true">
+        <a href="mailto:hispotboard@gmail.com" class="event-btn reschedule-btn" tabindex="-1" role="button" aria-disabled="true" id="email-btn">
             <i class="fa-light fa-envelope"></i>  Email the Board</a>
 </div>
     

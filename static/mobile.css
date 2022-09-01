@@ -246,7 +246,6 @@ div.foot > div.row > div.wrap {
 }
 
 #register-form {
-	margin-left: 0;
 	padding: 1%;
 }
 
@@ -282,10 +281,14 @@ div.foot > div.row > div.wrap {
 }
 
 #cc-form input {
-	width: 85vw;
+	width: 80vw;
 	padding: 0;
 	margin-top: 3vh;
 	height: 8vh;
+}
+
+#cc-form button {
+	width: 70vw;
 }
 
 #pay-submit {
