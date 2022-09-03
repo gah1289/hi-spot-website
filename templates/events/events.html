@@ -17,7 +17,11 @@
 <div class="card mb-3 event-card">
     <div class="card-body text-start">
         <div class="row">
+            {% if g.user.id in board_ids %} 
             <div class="col w-75">
+                {%else%}
+            <div class="col w-100">
+                {%endif%}
                 <h5 class="card-title">{{event.title}}</h5>                
 
             {% if event.description == 'This event has been rescheduled'%}
@@ -99,9 +103,9 @@
 
                     {%endif%}
             </div>
-
+            {%if g.user.id in board_ids %}
             <div class="col">
-                {%if g.user.id in board_ids %}
+                
                 <div class="row">
                     <div class="col w-30">
                     <a class="event-btn reschedule-btn" href="/events/{{event.id}}/reschedule" role="button">Reschedule</a>
@@ -177,10 +181,11 @@
             </div>    
         </div>
 </div>
+</div>
 
 {% endif %}
 {%endfor%}
-
+<div class="event">
 <h1>Past Events:</h1>
 {% for event in events |sort(attribute='date', reverse=True) %}
 {% if current_date > event.date %}
@@ -221,6 +226,7 @@
 {% endif %}
 {%endfor%}
 
+</div>
 </div>
 
 {%endblock%} 

@@ -12,11 +12,13 @@ async function getLaconiaWeather() {
 		const description = res.data.weather[0].description;
 		const icon = res.data.weather[0].icon;
 		const temp = Math.round(res.data.main.temp);
-		const windSpeed = res.data.wind.speed;
+		const windSpeed = res.data.wind.speed * 0.868976;
 		$weatherIcon.append(`<img id='weather-icon' src=http://openweathermap.org/img/wn/${icon}@2x.png>`);
 		$temperature.append(`<span class="temp"> ${temp}&#176F </span>`);
 		$weatherDesc.append(
-			`<span class="weather-desc"> ${description} <br> <i class="fa-light fa-wind"></i> ${windSpeed} <span class="mph">mph</span></span>`
+			`<span class="weather-desc"> ${description} <br> <i class="fa-light fa-wind"></i> ${windSpeed.toFixed(
+				2
+			)} <span class="mph">knots</span></span>`
 		);
 	} catch (e) {
 		$weatherIcon.append('<i class="fa-solid fa-circle-exclamation"></i>');
